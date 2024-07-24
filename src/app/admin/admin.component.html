@@ -1,0 +1,25 @@
+
+  <p-table [value]="performanceData">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>#</th>
+        <th>managerId</th>
+        <th>managerName</th>
+        <th>empName</th>
+        <th>completedTaskCount</th>
+        <th>month</th>
+        <th>year</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-i="rowIndex">
+      <tr>
+        <td>{{i + 1}}</td>
+        <td>{{product.managerId}}</td>
+        <td>{{product.managerName}}</td>
+        <td>{{product.empName}}</td>
+        <td>{{product.completedTaskCount}}</td>
+        <td>{{product.month}}</td>
+        <td>{{product.year}}</td>
+      </tr>
+    </ng-template>
+  </p-table>

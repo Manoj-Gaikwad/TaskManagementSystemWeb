@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#">Task Management System</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ng-container *ngIf="isAuthenticated$ | async as isAuthenticated; else loginLink">
+      <ul class="navbar-nav ml-auto">
+        <ng-container *ngIf="userRoles$ | async as userRoles">
+          <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin') || hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Employee')">
+            <a class="nav-link" routerLink="/tasks">Tasks</a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin') || hasRole(userRoles, 'Manager')">
+            <a class="nav-link" routerLink="/employees">Employee List</a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin')">
+            <a class="nav-link" routerLink="/admin">Performance List</a>
+          </li>
+          <li class="nav-item" *ngIf="hasRole(userRoles, 'Manager')">
+            <a class="nav-link" routerLink="/manager">Manager</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logout()">Logout</a>
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+    <ng-template #loginLink>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/register">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+      </ul>
+    </ng-template>
+  </div>
+</nav>

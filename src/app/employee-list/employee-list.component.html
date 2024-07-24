@@ -1,0 +1,27 @@
+<p-table [value]="allEmployeeList" expandableRows="true" rowExpandMode="single">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>#</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>PhoneNumber</th>
+        <th>DateOfBirth</th>
+        <th>address</th>
+        <th>role</th>
+
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-i="rowIndex">
+      <tr>
+        <td>{{i + 1}}</td>
+        <td>{{product.firstName}}</td>
+        <td>{{product.lastName}}</td>
+        <td>{{product.email}}</td>
+        <td>{{product.phoneNumber}}</td>
+        <td>{{product.dob}}</td>
+        <td>{{product.address}}</td>
+        <td>{{product.role}}</td>
+      </tr>
+    </ng-template>
+  </p-table>

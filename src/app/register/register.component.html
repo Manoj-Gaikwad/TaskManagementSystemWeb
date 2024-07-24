@@ -1,0 +1,89 @@
+<div class="container" >
+  <div class="register-box">
+    <h2>Register</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input id="firstName" type="text" formControlName="firstName" class="form-control" />
+          <div *ngIf="f['firstName'].touched && f['firstName'].invalid" class="error">
+            First Name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" type="text" formControlName="lastName" class="form-control" />
+          <div *ngIf="f['lastName'].touched && f['lastName'].invalid" class="error">
+            Last Name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" class="form-control" />
+          <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
+            Valid Email is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" formControlName="password" class="form-control" />
+          <div *ngIf="f['password'].touched && f['password'].invalid" class="error">
+            Password is required and should be at least 6 characters
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phoneNumber">Phone Number</label>
+          <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
+          <div *ngIf="f['phoneNumber'].touched && f['phoneNumber'].invalid" class="error">
+            PhoneNumber is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input id="dob" type="date" formControlName="dob" class="form-control" />
+          <div *ngIf="f['dob'].touched && f['dob'].invalid" class="error">
+            Date Of Birth is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="managerId">Manager ID</label>
+          <input id="managerId" type="text" formControlName="managerId" class="form-control" />
+          <div *ngIf="f['managerId'].touched && f['managerId'].invalid" class="error">
+            ManagerId is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="department">Department</label>
+          <input id="department" type="text" formControlName="department" class="form-control" />
+          <div *ngIf="f['department'].touched && f['department'].invalid" class="error">
+            Department is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role" formControlName="role" class="form-control">
+            <option>Employee</option>
+            <option>Manager</option>
+            <option>Admin</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input id="address" formControlName="address" class="form-control">
+          <div *ngIf="f['address'].touched && f['address'].invalid" class="error">
+            Address is required
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 56px; /* Adjust this value based on the height of your navbar */
+  background-image: url("../src/assets/bgimage.jpg");
+  background-position: auto;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-top: 56px; /* Adjust this value if your navbar height changes on smaller screens */
+  }
+}
+
+.container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.p-table {
+  width: 100%;
+}
+
+/* Ensure the navbar does not overlap the content */
+.fixed-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030;
+}

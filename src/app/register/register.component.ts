@@ -2,6 +2,7 @@ import { Register } from './../../Models/register';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../Sevices/auth.service';
+import { NotifyService } from 'src/Sevices/notify.service';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,7 @@ export class RegisterComponent implements OnInit {
   registerData!: Register;
   response: any;
 
-  constructor(private fb: FormBuilder, private authservice: AuthService) {}
+  constructor(private fb: FormBuilder, private authservice: AuthService, private notifyService:NotifyService) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -35,14 +36,18 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.registerForm.value);
     this.registerData = this.registerForm.value;
     this.registerData.dob = new Date(this.registerData.dob).toISOString();
-    console.log(this.registerData);
-    this.authservice.register(this.registerData).subscribe((data:any) => {
-      this.response = data;
-      this.registerForm.reset();
-      console.log(this.response);
+    this.authservice.register(this.registerData).subscribe((response:any) => {
+      if(response!=null||''){
+        this.notifyService.showSuccess();
+        this.registerForm.reset();
+      }
+      else
+      {
+        this.notifyService.showError();
+        this.registerForm.reset();
+      }
     });
   }
 }

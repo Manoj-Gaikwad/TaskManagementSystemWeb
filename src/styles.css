@@ -1,16 +1,16 @@
 html, body {
   height: 100%;
-}
-
-body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-top: 56px; /* Adjust this value based on the height of your navbar */
-  background-image: url("../src/assets/bgimage.jpg");
+  padding-top: 30px; /* Adjust this value based on the height of your navbar */
+  /* background-image: url("../src/assets/bgimage.jpg");
   background-position: auto;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover; */
+  /* background-color:red; */
 }
+
+
 
 @media (max-width: 767px) {
   body {

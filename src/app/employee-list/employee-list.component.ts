@@ -9,16 +9,22 @@ import { TableModule } from 'primeng/table';
 })
 export class EmployeeListComponent implements OnInit {
  allEmployeeList:any;
+ getManagerWiseEmpList:any;
+
   constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {
-    this.getAllEmployeeList();
+    // this.getAllEmployeeList();
+    this.GetManagerWiseEmployee();
   }
-  getAllEmployeeList()
-  {
-    debugger
-    this.taskService.getAllEmployeeList().subscribe(data=>{
+  getAllEmployeeList(){
+    this.taskService.getAllEmployeeList().subscribe((data:any)=>{
       this.allEmployeeList=data;
+    })
+  }
+  GetManagerWiseEmployee(){
+    this.taskService.GetManagerWiseEmployee().subscribe((data:any)=>{
+      this.getManagerWiseEmpList=data;
     })
   }
 }

@@ -15,16 +15,15 @@ export class AuthService {
   private jwtHelper = new JwtHelperService();
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isTokenValid());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  public UserRole = new BehaviorSubject<string>('');
+  public userInfo = new BehaviorSubject<any>(this.getUser());
 
 
   constructor(private http: HttpClient, private router: Router) {}
 
- register(register:Register)
- {
-  debugger
+ register(register:Register){
   return this.http.post(this.apiUrl+'/register',register);
  }
-
 
 
   login(loginData: login): Observable<any> {
@@ -42,6 +41,7 @@ export class AuthService {
               roles: response.roles // Assuming roles is now a single string like 'Admin' or 'Manager'
             }));
             this.isAuthenticatedSubject.next(true);
+            this.userInfo.next(response);
             this.router.navigate(['/home']);
           }
           return response;
@@ -60,7 +60,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    debugger
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token || '');
   }

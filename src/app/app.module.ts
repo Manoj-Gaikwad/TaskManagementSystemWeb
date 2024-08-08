@@ -30,6 +30,11 @@ import { MessageModule } from 'primeng/message';
 import {ButtonModule} from 'primeng/button';
 import {RippleModule} from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
+import {AvatarModule} from 'primeng/avatar';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import { ChipModule } from 'primeng/chip';
+import { DialogModule } from 'primeng/dialog';
+import {DropdownModule} from 'primeng/dropdown';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -64,6 +69,11 @@ export function tokenGetter() {
     ButtonModule,
     ToastModule,
     RippleModule,
+    AvatarModule,
+    SplitButtonModule,
+    ChipModule,
+    DialogModule,
+    DropdownModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

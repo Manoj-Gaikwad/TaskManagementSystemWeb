@@ -32,10 +32,10 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.LoginData = this.loginForm.value;
-
       this.authservice.login(this.LoginData).subscribe(data => {
         this.responseData = data;
-        if (this.responseData.token) {
+        this.authservice.UserRole.next(this.responseData?.roles);
+        if (this.responseData && this.responseData.token) {
           this.notifyservice.showSuccess();
         } else {
           this.notifyservice.showError();
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         this.notifyservice.showError();
       });
     } else {
-      this.loginForm.markAllAsTouched();
+      this.notifyservice.showError();
     }
   }
 }

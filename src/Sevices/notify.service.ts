@@ -11,18 +11,18 @@ export class NotifyService {
   }
 
   showSuccess() {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success' });
   }
 
   showInfo() {
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Message Content' });
+    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Info' });
   }
 
   showWarn() {
-    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Message Content' });
+    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Warning' });
   }
 
   showError() {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Content' });
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error' });
   }
 }

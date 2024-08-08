@@ -23,6 +23,15 @@
           <li class="nav-item">
             <a class="nav-link" (click)="logout()">Logout</a>
           </li>
+          <li class="nav-item">
+            <!-- <p-splitButton [model]="items" (onClick)="save('info')" styleClass="custom-split-button">
+              <ng-template pTemplate="content">
+                <p-avatar image="assets/Akshay.jpg" styleClass="mr-2" shape="circle"></p-avatar>
+                Profile
+              </ng-template>
+            </p-splitButton> -->
+            <p-chip label={{this.userinfo.firstName}} image="assets/Akshay.jpg" styleClass="mr-2"></p-chip>
+          </li>
         </ng-container>
       </ul>
     </ng-container>

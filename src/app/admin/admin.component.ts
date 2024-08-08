@@ -20,12 +20,10 @@ export class AdminComponent implements OnInit {
   }
 
   loadPerformanceData(): void {
-    debugger
     this.taskService.getMonthWisePerformance().subscribe(
       data => {
         this.performanceData = data;
-        console.log(this.performanceData); // You can remove this line later
-      },
+ },
       error => {
         console.error('Error fetching performance data', error);
       }

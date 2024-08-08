@@ -11,14 +11,33 @@ import { map } from 'rxjs/operators';
 export class NavbarComponent implements OnInit {
   isAuthenticated$!: Observable<boolean>;
   userRoles$!: Observable<string>;
+  items!:any;
+  userinfo!:any;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+
+  }
 
   ngOnInit(): void {
+    this.authService.userInfo.subscribe((data:any)=>{
+      this.userinfo=data;
+    });
     this.isAuthenticated$ = this.authService.isAuthenticated$;
     this.userRoles$ = this.authService.isAuthenticated$.pipe(
       map(isAuth => isAuth ? this.authService.getUserRoles() : '')
     );
+
+    this.items = [
+      {label: 'Update', icon: 'pi pi-refresh', command: () => {
+          this.update();
+      }},
+      {label: 'Delete', icon: 'pi pi-times', command: () => {
+          this.delete();
+      }},
+      {label: 'Angular.io', icon: 'pi pi-info', url: 'http://angular.io'},
+      {separator:true},
+      {label: 'Setup', icon: 'pi pi-cog', routerLink: ['/setup']}
+  ];
   }
 
   logout(): void {
@@ -28,5 +47,19 @@ export class NavbarComponent implements OnInit {
 
   hasRole(userRoles: string, role: string): boolean {
     return userRoles === role;
+
   }
+
+  save(severity: string) {
+
+}
+
+update() {
+
+}
+
+delete() {
+
+}
+
 }

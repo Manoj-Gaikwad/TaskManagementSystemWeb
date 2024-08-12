@@ -35,6 +35,8 @@ import {SplitButtonModule} from 'primeng/splitbutton';
 import { ChipModule } from 'primeng/chip';
 import { DialogModule } from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
+import {FileUploadModule} from 'primeng/fileupload';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -74,6 +76,9 @@ export function tokenGetter() {
     ChipModule,
     DialogModule,
     DropdownModule,
+    FileUploadModule,
+    HttpClientModule,
+    RadioButtonModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

@@ -1,0 +1,11 @@
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem; /* Adjust as needed */
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../Sevices/auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Register } from 'src/Models/register';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+interface Role {
+  name: string
+}
 
 @Component({
   selector: 'app-navbar',
@@ -13,9 +19,25 @@ export class NavbarComponent implements OnInit {
   userRoles$!: Observable<string>;
   items!:any;
   userinfo!:any;
+  displayBasic!: boolean;
+  updateProfile!: Register;
+  updateProfileForm!: FormGroup;
+  selectedCity!:Role;
+  Roles!:Role[];
 
-  constructor(private authService: AuthService) {
-
+  constructor(private authService: AuthService, private fb: FormBuilder) {
+    this.updateProfileForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      phoneNumber: ['', Validators.required],
+      dob: ['', Validators.required],
+      address: ['', Validators.required],
+      department: ['', Validators.required],
+      role: ['', Validators.required],
+      managerId: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
@@ -28,15 +50,15 @@ export class NavbarComponent implements OnInit {
     );
 
     this.items = [
-      {label: 'Update', icon: 'pi pi-refresh', command: () => {
-          this.update();
+      {label: 'Profile', icon: 'pi pi-user', command: () => {
+          this.Profile();
       }},
-      {label: 'Delete', icon: 'pi pi-times', command: () => {
-          this.delete();
+      {label: 'logout', icon: 'pi pi-times', command: () => {
+          this.logout();
       }},
-      {label: 'Angular.io', icon: 'pi pi-info', url: 'http://angular.io'},
-      {separator:true},
-      {label: 'Setup', icon: 'pi pi-cog', routerLink: ['/setup']}
+      // {label: 'Angular.io', icon: 'pi pi-info', url: 'http://angular.io'},
+      // {separator:true},
+      // {label: 'Setup', icon: 'pi pi-cog', routerLink: ['/setup']}
   ];
   }
 
@@ -44,22 +66,20 @@ export class NavbarComponent implements OnInit {
     this.authService.logout();
     window.location.reload();
   }
+  onSubmit() {
+  }
 
   hasRole(userRoles: string, role: string): boolean {
     return userRoles === role;
-
   }
 
-  save(severity: string) {
-
+Profile() {
+  this.displayBasic = true;
 }
-
-update() {
-
+get f() {
+  return this.updateProfileForm.controls;
 }
-
-delete() {
-
+showBasicDialog() {
+  this.displayBasic = true;
 }
-
 }

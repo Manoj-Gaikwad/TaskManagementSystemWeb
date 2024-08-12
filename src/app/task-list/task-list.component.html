@@ -7,7 +7,7 @@
   <form [formGroup]="CreateTaskForm" (ngSubmit)="submitForm(CreateTaskForm)">
     <h2 class="text-center">Create Task</h2>
     <div class="form-container">
-      <div class="row">
+      <div class="row" let i=index>
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-12">
@@ -62,14 +62,13 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="managerId">Manager ID</label>
-                <input type="number" formControlName="managerId" id="managerId" class="form-control"
-                  placeholder="Enter Manager ID" required readonly>
+                <input type="text" formControlName="managerId" id="managerId" class="form-control"
+                  placeholder="Enter Manager ID"  readonly>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </form>
   <ng-template pTemplate="footer">
@@ -91,9 +90,8 @@
       <th>Is Completed</th>
       <th>Manager ID</th>
       <th>Task ID</th>
-      <th>Uploaded File</th>
+      <th>Status</th>
       <th>Submit Task</th>
-
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task let-i="rowIndex">
@@ -109,6 +107,42 @@
       <td>{{task.managerId}}</td>
       <td>{{task.taskId}}</td>
       <td>{{task.uplodedfile}}</td>
+      <td *ngIf="task.uplodedfile!='Yes'">
+        <div class="button-container">
+        <button pButton pRipple type="button" label="Upload File" icon="pi pi-upload" class="p-button-secondary"
+          (click)="uploadFileDialog(task.taskId)"></button>
+      </div>
+    </td>
     </tr>
   </ng-template>
 </p-table>
+
+
+<p-dialog header="Upload File" [(visible)]="displayUpload" [style]="{width: '60vw'}" [baseZIndex]="10000">
+  <form [formGroup]="uploadDataForm" (ngSubmit)="submitUpdateForm(uploadDataForm)">
+    <h2 class="text-center">Upload Task</h2>
+    <div class="form-container">
+      <div class="row">
+        <div class="col-md-6">
+              <div class="form-group">
+                <label for="title">Upload File</label>
+                <input type="File" formControlName="File" id="title" class="form-control" placeholder="Upload File"
+                (change)="onFileChange($event)"  required>
+              </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="title">TaskId</label>
+            <input type="number" formControlName="TaskId" id="title" class="form-control" placeholder="Task Id"
+              required readonly>
+          </div>
+
+    </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="submitUpdateForm(uploadDataForm)"></button>
+    <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayUpload=false"></button>
+  </ng-template>
+</p-dialog>

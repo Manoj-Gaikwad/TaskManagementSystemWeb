@@ -8,5 +8,5 @@ export interface Register{
   department:string;
   role:string;
   password:string;
-  managerId:number;
+  managerId:string;
 }

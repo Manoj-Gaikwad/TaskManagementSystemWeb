@@ -1,36 +1,30 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
   <a class="navbar-brand" href="#">Task Management System</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ng-container *ngIf="isAuthenticated$ | async as isAuthenticated; else loginLink">
       <ul class="navbar-nav ml-auto">
         <ng-container *ngIf="userRoles$ | async as userRoles">
-          <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin') || hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Employee')">
+          <li class="nav-item"
+            *ngIf="hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Employee')">
             <a class="nav-link" routerLink="/tasks">Tasks</a>
           </li>
-          <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin') || hasRole(userRoles, 'Manager')">
+          <li class="nav-item" *ngIf="hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Manager')">
             <a class="nav-link" routerLink="/employees">Employee List</a>
           </li>
           <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin')">
-            <a class="nav-link" routerLink="/admin">Performance List</a>
+            <a class="nav-link" routerLink="/admin">Employee Performance Data</a>
           </li>
           <li class="nav-item" *ngIf="hasRole(userRoles, 'Manager')">
             <a class="nav-link" routerLink="/manager">Manager</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="logout()">Logout</a>
-          </li>
-          <li class="nav-item">
-            <!-- <p-splitButton [model]="items" (onClick)="save('info')" styleClass="custom-split-button">
-              <ng-template pTemplate="content">
-                <p-avatar image="assets/Akshay.jpg" styleClass="mr-2" shape="circle"></p-avatar>
-                Profile
-              </ng-template>
-            </p-splitButton> -->
-            <p-chip label={{this.userinfo.firstName}} image="assets/Akshay.jpg" styleClass="mr-2"></p-chip>
+            <!-- <p-splitButton label="Welcome {{this.userinfo.firstName}} " [model]="this.items"
+              styleClass="p-button-rounded p-button-secondary mt-"></p-splitButton> -->
+              <p-splitButton label="Welcome {{this.userinfo.firstName}}" [model]="items" styleClass="p-button-raised p-button-secondary"></p-splitButton>
           </li>
         </ng-container>
       </ul>
@@ -38,12 +32,121 @@
     <ng-template #loginLink>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/register">Register</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" routerLink="/login">Login</a>
         </li>
       </ul>
     </ng-template>
   </div>
 </nav>
+
+
+<p-dialog [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
+  <form [formGroup]="updateProfileForm" (ngSubmit)="onSubmit()">
+    <h2 class="text-center">Profile Info</h2>
+    <div class="form-container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input id="firstName" type="text" formControlName="firstName" class="form-control" />
+            <div *ngIf="f['firstName'].touched && f['firstName'].invalid" class="error">
+              *First Name is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" type="text" formControlName="lastName" class="form-control" />
+            <div *ngIf="f['lastName'].touched && f['lastName'].invalid" class="error">
+              *Last Name is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input id="dob" type="date" formControlName="dob" class="form-control" />
+            <div *ngIf="f['dob'].touched && f['dob'].invalid" class="error">
+              *Date Of Birth is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" class="form-control" />
+            <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
+              *Valid Email is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" formControlName="password" class="form-control" />
+            <div *ngIf="f['password'].touched && f['password'].invalid" class="error">
+              *Password is required and should be at least 6 characters
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="role">Role</label><br>
+            <p-dropdown [options]="Roles" [(ngModel)]="selectedCity" placeholder="Select Role" optionLabel="name"
+              [showClear]="true" formControlName="role"></p-dropdown>
+            <div *ngIf="f['role'].touched && f['role'].invalid" class="error">
+              *Role is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
+            <div *ngIf="f['phoneNumber'].touched && f['phoneNumber'].invalid" class="error">
+              *PhoneNumber is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="department">Department</label>
+            <input id="department" type="text" formControlName="department" class="form-control" />
+            <div *ngIf="f['department'].touched && f['department'].invalid" class="error">
+              *Department is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="managerId">Manager ID</label>
+            <input id="managerId" type="text" formControlName="managerId" class="form-control" readonly />
+            <div *ngIf="f['managerId'].touched && f['managerId'].invalid" class="error">
+              *ManagerId is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input id="address" formControlName="address" class="form-control">
+            <div *ngIf="f['address'].touched && f['address'].invalid" class="error">
+              *Address is required
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="onSubmit()"></button>
+    <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayBasic=false"></button>
+  </ng-template>
+</p-dialog>

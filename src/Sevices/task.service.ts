@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { Upload } from 'src/Models/upload';
+
 
 
 @Injectable({
@@ -37,12 +39,18 @@ export class TaskService {
     return this.http.post(`${this.apiUrl}/Task/CreateTask`, task , { headers: this.getHeaders() });
   }
 
-  uploadDocument(taskId: number, file: File): Observable<any> {
-    const formData: FormData = new FormData();
-    formData.append('file', file);
-    formData.append('taskId', taskId.toString());
-
-    return this.http.post(`${this.apiUrl}/tasks/upload`, formData, { headers: this.getHeaders() });
+  uploadDocument(upload:any): Observable<any> {
+    const formData = new FormData();
+    formData.append('File', upload.File);
+    formData.append('TaskId', upload.TaskId.toString());
+    formData.append('isComplited', upload.isComplited.toString());
+    formData.append('FileUpload', upload.FileUpload);
+    return this.http.post<string>(`${this.apiUrl}/Employee/UploadFile`, formData, {
+      headers: new HttpHeaders({
+        'Accept': 'text/plain'
+      }),
+      responseType: 'text' as 'json' // Ensure responseType is text
+    });;
   }
 
   getMonthWisePerformance(): Observable<any> {
@@ -68,6 +76,5 @@ export class TaskService {
   GetAllManagedEmployees(): Observable<any> {
     return this.http.get(`${this.apiUrl}/Task/GetAllManagedEmployees`, { headers: this.getHeaders() });
   }
-
 
 }

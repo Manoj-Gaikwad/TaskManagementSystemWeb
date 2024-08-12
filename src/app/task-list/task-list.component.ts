@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../../Sevices/task.service'; // Adjust path as per your project structure
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifyService } from 'src/Sevices/notify.service';
+import { Upload } from 'src/Models/upload';
 interface Employee {
   email: string;
 }
@@ -19,6 +20,12 @@ export class TaskListComponent implements OnInit {
   selectedEmployee: Employee | null = null;
   managerEmail:any;
   managerId:any;
+  uploadedFiles:any;
+  displayUpload!:boolean;
+  upload!:Upload;
+  uploadDataForm!:FormGroup;
+  selectedFile :any;
+  File:any;
 
 
   constructor(
@@ -30,15 +37,22 @@ export class TaskListComponent implements OnInit {
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       assignedTo: ['', [Validators.required, Validators.email]], // or you might need a different setup if you want to handle objects
-      createdBy: [{ value:'' }, [Validators.required, Validators.email]],
+      createdBy: ['', [Validators.required, Validators.email]],
       creationDate: ['', Validators.required],
       isCompleted: [false,[Validators.required]],
       uploadedFile: ['No',[Validators.required]],
       completionDate: ['0001-01-01T00:00:00.000Z',[Validators.required]],
-      managerId: [{ value:'' }, Validators.required]
+      managerId: ['', Validators.required]
+    });
+
+
+    this.uploadDataForm=this.fb.group({
+      File:['',[Validators.required]],
+      isComplited:[true,[Validators.required]],
+      FileUpload:['Yes',[Validators.required]],
+      TaskId:['',[Validators.required]]
     });
   }
-
 
   ngOnInit(): void {
     this.GetAssignTasks();
@@ -49,7 +63,45 @@ export class TaskListComponent implements OnInit {
     this.displayBasic = true;
   }
 
-  submitForm(data: any) {
+  onBasicUpload(event:any) {
+    this.notifyservice.showSuccess();
+    for(let file of event.files) {
+        this.uploadedFiles.push(file);
+    }
+  }
+  uploadFileDialog(TId:any){
+    this.displayUpload=true;
+    this.uploadDataForm.patchValue({
+      TaskId:TId,
+    });
+  }
+  onFileChange(event:any){
+    const file = event.target.files[0];
+    this.File=event.target.files[0];
+  }
+  submitUpdateForm(data: any) {
+    const file = this.uploadDataForm.get('File')?.value;
+    this.upload = {
+      File: this.File,
+      isComplited: this.uploadDataForm.get('isComplited')?.value,
+      FileUpload: this.uploadDataForm.get('FileUpload')?.value,
+      TaskId: this.uploadDataForm.get('TaskId')?.value
+    };
+
+    this.taskService.uploadDocument(this.upload).subscribe((response:any) => {
+      if(response=="File uploaded successfully")
+      {
+      this.displayUpload=false;
+      this.notifyservice.showSuccess();
+      this.GetAssignTasks();
+      }
+      else
+      {
+        this.notifyservice.showError();
+      }
+    });
+}
+  submitForm(data: any){
       const currentDate = new Date().toISOString();
       const assignedToEmail = data.value.assignedTo?.email || '';
       this.CreateTaskForm.patchValue({

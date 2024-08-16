@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'manager', component: ManagerComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: '/tasks', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/tasks', pathMatch: 'full' }
 ];
 

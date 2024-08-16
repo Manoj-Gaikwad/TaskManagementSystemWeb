@@ -1,4 +1,4 @@
-<div class="button-container">
+<div class="button-container" *ngIf="Role=='Manager'">
   <button pButton pRipple type="button" label="New Task" icon="pi pi-plus" class="p-button-secondary"
     (click)="showBasicDialog()"></button>
 </div>
@@ -77,7 +77,7 @@
   </ng-template>
 </p-dialog>
 
-<p-table [value]="Alltasks" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+<p-table [value]="Alltasks" styleClass="p-datatable-gridlines"  [rows]="4" [rowsPerPageOptions]="[4,8,12,50,100]" [paginator]="true" [tableStyle]="{'min-width': '50rem'}" >
   <ng-template pTemplate="header">
     <tr>
       <th>#</th>
@@ -92,6 +92,7 @@
       <th>Task ID</th>
       <th>Status</th>
       <th>Submit Task</th>
+      <th>Update Task</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task let-i="rowIndex">
@@ -107,17 +108,23 @@
       <td>{{task.managerId}}</td>
       <td>{{task.taskId}}</td>
       <td>{{task.uplodedfile}}</td>
-      <td *ngIf="task.uplodedfile!='Yes'">
-        <div class="button-container">
+      <td>
+        <div class="button-container"  *ngIf="task.uplodedfile!='Yes'">
         <button pButton pRipple type="button" label="Upload File" icon="pi pi-upload" class="p-button-secondary"
           (click)="uploadFileDialog(task.taskId)"></button>
       </div>
     </td>
+    <td>
+      <div class="button-container"  *ngIf="task.uplodedfile!='Yes'">
+      <button pButton pRipple type="button" label="Update Task" icon="pi pi-wrench" class="p-button-secondary"
+        (click)="getTaskDetails(task.taskId)"></button>
+    </div>
+  </td>
     </tr>
   </ng-template>
 </p-table>
 
-
+<!--File Upload  Dialog-->
 <p-dialog header="Upload File" [(visible)]="displayUpload" [style]="{width: '60vw'}" [baseZIndex]="10000">
   <form [formGroup]="uploadDataForm" (ngSubmit)="submitUpdateForm(uploadDataForm)">
     <h2 class="text-center">Upload Task</h2>
@@ -146,3 +153,81 @@
     <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayUpload=false"></button>
   </ng-template>
 </p-dialog>
+
+<!-------------------------------------------------------------------------------------------------------------------------------->
+<!--Task Update  Dialog-->
+
+<p-dialog header="Update Task Form" [(visible)]="updateBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
+  <form [formGroup]="UpdateTaskForm">
+    <h2 class="text-center">Update Task Form</h2>
+    <div class="form-container">
+      <div class="row" let i=index>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" formControlName="title" id="title" class="form-control" placeholder="Enter Title"
+                  required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" formControlName="description" class="form-control"
+                  placeholder="Enter Description" rows="4" required></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group ">
+                  <label for="description">AssignedTo</label><br>
+                  <p-dropdown [options]="allEmployeeData" [(ngModel)]="updateSelectedEmployee" optionLabel="email" [filter]="true" filterBy="email"
+                      [showClear]="true" placeholder="Select an Employee" formControlName="assignedTo">
+                      <ng-template pTemplate="selectedItem" let-selectedEmployee>
+                        <div class="country-item country-item-value" *ngIf="selectedEmployee">
+                          <div>{{ selectedEmployee.email }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-employee pTemplate="item">
+                        <div class="country-item">
+                          <div>{{ employee.email }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="createdBy">Created By</label>
+                <input type="email" formControlName="createdBy" id="createdBy" class="form-control"
+                  placeholder="Creater Email"  readonly>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="managerId">Manager ID</label>
+                <input type="text" formControlName="managerId" id="managerId" class="form-control"
+                  placeholder="Enter Manager ID"  readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="Updatetask(UpdateTaskForm)"></button>
+    <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="updateBasic=false"></button>
+  </ng-template>
+</p-dialog>
+

@@ -41,8 +41,8 @@
 
 
 <p-dialog [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
-  <form [formGroup]="updateProfileForm" (ngSubmit)="onSubmit()">
-    <h2 class="text-center">Profile Info</h2>
+  <form [formGroup]="updateProfileForm" >
+    <h2 class="text-center">Update Profile Info</h2>
     <div class="form-container">
       <div class="row">
         <div class="col-md-4">
@@ -77,33 +77,12 @@
         <div class="col-md-5">
           <div class="form-group">
             <label for="email">Email</label>
-            <input id="email" type="email" formControlName="email" class="form-control" />
+            <input id="email" type="email" formControlName="email" class="form-control" readonly/>
             <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
               *Valid Email is required
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input id="password" type="password" formControlName="password" class="form-control" />
-            <div *ngIf="f['password'].touched && f['password'].invalid" class="error">
-              *Password is required and should be at least 6 characters
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <label for="role">Role</label><br>
-            <p-dropdown [options]="Roles" [(ngModel)]="selectedCity" placeholder="Select Role" optionLabel="name"
-              [showClear]="true" formControlName="role"></p-dropdown>
-            <div *ngIf="f['role'].touched && f['role'].invalid" class="error">
-              *Role is required
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
         <div class="col-md-4">
           <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
@@ -113,21 +92,12 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label for="department">Department</label>
             <input id="department" type="text" formControlName="department" class="form-control" />
             <div *ngIf="f['department'].touched && f['department'].invalid" class="error">
               *Department is required
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="managerId">Manager ID</label>
-            <input id="managerId" type="text" formControlName="managerId" class="form-control" readonly />
-            <div *ngIf="f['managerId'].touched && f['managerId'].invalid" class="error">
-              *ManagerId is required
             </div>
           </div>
         </div>
@@ -146,7 +116,7 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="onSubmit()"></button>
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="onSubmit(updateProfileForm)"></button>
     <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayBasic=false"></button>
   </ng-template>
 </p-dialog>

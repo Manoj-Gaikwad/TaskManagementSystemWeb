@@ -68,3 +68,9 @@
 .p-table td {
   padding: 10px;
 }
+
+
+.p-datatable-gridlines .p-datatable-body {
+  max-height: 400px; /* Adjust the height as needed */
+  overflow: auto;
+}

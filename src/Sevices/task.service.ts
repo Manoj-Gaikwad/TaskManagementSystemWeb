@@ -38,7 +38,14 @@ export class TaskService {
   createTask(task: any){
     return this.http.post(`${this.apiUrl}/Task/CreateTask`, task , { headers: this.getHeaders() });
   }
+  updateTask(task: any): Observable<any> {
+    const headers = this.getHeaders().append('Accept', 'text/plain'); // Append additional headers if needed
 
+    return this.http.post(`${this.apiUrl}/Task/UpdateTask`, task, {
+      headers: headers,
+      responseType: 'text' as 'json' // Ensure responseType is text
+    });
+  }
   uploadDocument(upload:any): Observable<any> {
     const formData = new FormData();
     formData.append('File', upload.File);
@@ -50,7 +57,7 @@ export class TaskService {
         'Accept': 'text/plain'
       }),
       responseType: 'text' as 'json' // Ensure responseType is text
-    });;
+    });
   }
 
   getMonthWisePerformance(): Observable<any> {
@@ -75,6 +82,10 @@ export class TaskService {
 
   GetAllManagedEmployees(): Observable<any> {
     return this.http.get(`${this.apiUrl}/Task/GetAllManagedEmployees`, { headers: this.getHeaders() });
+  }
+
+  GetTaskById(data:any){
+   return this.http.get(`${this.apiUrl}/Task/GetTaskById?TaskId=${data}`);
   }
 
 }

@@ -4,82 +4,130 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Register } from 'src/Models/register';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotifyService } from 'src/Sevices/notify.service';
 
 interface Role {
-  name: string
+  name: string;
 }
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
   isAuthenticated$!: Observable<boolean>;
   userRoles$!: Observable<string>;
-  items!:any;
-  userinfo!:any;
+  items!: any;
+  userinfo!: any;
   displayBasic!: boolean;
   updateProfile!: Register;
   updateProfileForm!: FormGroup;
-  selectedCity!:Role;
-  Roles!:Role[];
+  selectedCity!: Role;
+  Roles!: Role[];
+  updateProfileData: any;
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private notifyService: NotifyService
+  ) {
     this.updateProfileForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
       phoneNumber: ['', Validators.required],
       dob: ['', Validators.required],
       address: ['', Validators.required],
       department: ['', Validators.required],
-      role: ['', Validators.required],
-      managerId: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
-    this.authService.userInfo.subscribe((data:any)=>{
-      this.userinfo=data;
+    this.authService.userInfo.subscribe((data: any) => {
+      this.userinfo = data;
     });
     this.isAuthenticated$ = this.authService.isAuthenticated$;
     this.userRoles$ = this.authService.isAuthenticated$.pipe(
-      map(isAuth => isAuth ? this.authService.getUserRoles() : '')
+      map((isAuth) => (isAuth ? this.authService.getUserRoles() : ''))
     );
 
     this.items = [
-      {label: 'Profile', icon: 'pi pi-user', command: () => {
+      {
+        label: 'Profile',
+        icon: 'pi pi-user',
+        command: () => {
           this.Profile();
-      }},
-      {label: 'logout', icon: 'pi pi-times', command: () => {
+        },
+      },
+      {
+        label: 'logout',
+        icon: 'pi pi-times',
+        command: () => {
           this.logout();
-      }},
+        },
+      },
       // {label: 'Angular.io', icon: 'pi pi-info', url: 'http://angular.io'},
       // {separator:true},
       // {label: 'Setup', icon: 'pi pi-cog', routerLink: ['/setup']}
-  ];
+    ];
   }
 
   logout(): void {
     this.authService.logout();
     window.location.reload();
   }
-  onSubmit() {
+  onSubmit(data: any) {
+    this.updateProfileData = data.value;
+    this.updateProfileData.dob = new Date(data.value.dob).toISOString();
+    this.authService
+      .updateUserInfo(this.updateProfileData)
+      .subscribe((data: any) => {
+        const response = data;
+        if (data != 'null') {
+          this.userinfo = data[0];
+          this.displayBasic = false;
+          this.notifyService.showSuccess();
+        } else {
+          this.notifyService.showError();
+        }
+      });
   }
 
   hasRole(userRoles: string, role: string): boolean {
     return userRoles === role;
   }
 
-Profile() {
-  this.displayBasic = true;
-}
-get f() {
-  return this.updateProfileForm.controls;
-}
-showBasicDialog() {
-  this.displayBasic = true;
-}
+  Profile() {
+    this.displayBasic = true;
+    this.authService
+      .getLoginUserDetails(this.userinfo.email)
+      .subscribe((data: any) => {
+        this.updateProfileData = data;
+        const dob = new Date(this.updateProfileData.dob)
+          .toISOString()
+          .split('T')[0];
+        if (this.updateProfileData != null) {
+          // this.Roles.name=this.updateProfileData.role;
+          this.updateProfileForm.patchValue({
+            firstName: this.updateProfileData.firstName,
+            lastName: this.updateProfileData.lastName,
+            email: this.updateProfileData.email,
+            dob: dob,
+            address: this.updateProfileData.address,
+            department: this.updateProfileData.department,
+            role: this.Roles,
+            managerId: this.updateProfileData.managerId,
+            phoneNumber: this.updateProfileData.phoneNumber,
+          });
+        } else {
+          this.notifyService.showError();
+        }
+      });
+  }
+
+  get f() {
+    return this.updateProfileForm.controls;
+  }
+  UpdateInfo() {}
 }

@@ -3,6 +3,8 @@ import { TaskService } from '../../Sevices/task.service'; // Adjust path as per 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifyService } from 'src/Sevices/notify.service';
 import { Upload } from 'src/Models/upload';
+import { AuthService } from '../../Sevices/auth.service';
+import { createTask } from 'src/Models/createTask';
 interface Employee {
   email: string;
 }
@@ -26,12 +28,20 @@ export class TaskListComponent implements OnInit {
   uploadDataForm!:FormGroup;
   selectedFile :any;
   File:any;
+  Role:any;
+  updateBasic!:boolean;
+  UpdateTaskForm!:FormGroup;
+  updateTask!:any;
+  updateSelectedEmployee: Employee[] = [];
+  Task!:createTask;
+  updateTaskId:any;
 
 
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
-    private notifyservice: NotifyService
+    private notifyservice: NotifyService,
+    private authService:AuthService
   ) {
     this.CreateTaskForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -45,6 +55,13 @@ export class TaskListComponent implements OnInit {
       managerId: ['', Validators.required]
     });
 
+    this.UpdateTaskForm = this.fb.group({
+      title: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      assignedTo: ['', [Validators.required, Validators.email]], // or you might need a different setup if you want to handle objects
+      createdBy: ['', [Validators.required, Validators.email]],
+      managerId: ['', Validators.required],
+    });
 
     this.uploadDataForm=this.fb.group({
       File:['',[Validators.required]],
@@ -57,6 +74,9 @@ export class TaskListComponent implements OnInit {
   ngOnInit(): void {
     this.GetAssignTasks();
     this.GetAllManagedEmployees();
+    this.authService.userInfo.subscribe((data:any)=>{
+      this.Role=data.roles;
+    })
   }
 
   showBasicDialog() {
@@ -160,4 +180,60 @@ export class TaskListComponent implements OnInit {
         .map((email: string) => ({ email })); // Map to Employee interface
     });
   }
+
+getTaskDetails(data:any){
+  this.updateBasic=true;
+  this.updateTaskId=data;
+  this.taskService.GetTaskById(data).subscribe((response:any)=>{
+    const employee: Employee = { email: response.assignedTo || '' };
+    if (employee.email) {  // Ensure email is valid before pushing
+      this.updateSelectedEmployee = [{ email: employee.email }]; // Replace array with the new employee
+    } else {
+      this.notifyservice.showError();
+    }
+
+    if(response!=null)
+    {
+      this.UpdateTaskForm.patchValue({
+        title:response.title,
+        description:response.description,
+        assignedTo:this.updateSelectedEmployee[0],
+        createdBy:response.createdBy,
+        managerId:response.managerId
+      });
+      this.GetAssignTasks();
+    }
+    else{
+      this.notifyservice.showError();
+    }
+  })
+
+}
+
+Updatetask(data:any){
+  const assignedToEmail = data.value.assignedTo?.email || '';
+  this.UpdateTaskForm.patchValue({
+    title: data.value.title,
+    description: data.value.description,
+    assignedTo: assignedToEmail,
+    createdBy: this.managerEmail,
+    managerId:this.managerId
+  });
+
+  this.Task=this.UpdateTaskForm.value;
+  this.Task.taskId=this.updateTaskId;
+  this.taskService.updateTask(this.Task).subscribe((response:any)=>{
+    var res=response;
+    if(res!=null)
+    {
+      this.updateBasic=false;
+      this.notifyservice.showSuccess();
+      this.GetAssignTasks();
+    }
+    else{
+      this.notifyservice.showError();
+    }
+  });
+}
+
 }

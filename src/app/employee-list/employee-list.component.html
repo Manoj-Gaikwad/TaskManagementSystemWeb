@@ -62,7 +62,7 @@
             <div *ngIf="f['role'].touched && f['role'].invalid" class="error">
               *Role is required
             </div>
-            
+
             <!-- <select id="role" formControlName="role" class="form-control">
               <option>Employee</option>
               <option>Manager</option>
@@ -122,7 +122,7 @@
 
 
 
-<p-table [value]="getManagerWiseEmpList" expandableRows="true" rowExpandMode="single" styleClass="p-datatable-gridlines"
+<p-table [value]="getManagerWiseEmpList" expandableRows="true" [rows]="5" [rowsPerPageOptions]="[5,10,15,50]" [paginator]="true"  rowExpandMode="single" styleClass="p-datatable-gridlines"
   [tableStyle]="{'min-width': '50rem'}">
   <ng-template pTemplate="header">
     <tr>
@@ -134,6 +134,7 @@
       <th>DateOfBirth</th>
       <th>Address</th>
       <th>Role</th>
+      <th>UpdateInfo</th>
 
     </tr>
   </ng-template>
@@ -147,6 +148,93 @@
       <td>{{product.dob}}</td>
       <td>{{product.address}}</td>
       <td>{{product.role}}</td>
+      <td><div class="button-container">
+        <button pButton pRipple type="button" label="Update" icon="pi pi-wrench" class="p-button-secondary"
+          (click)="showUpdateDialog(product.email)"></button>
+      </div></td>
     </tr>
   </ng-template>
 </p-table>
+
+<!------------------------------------------------------------------------------------------------------------>
+
+<p-dialog [(visible)]="updatedialog" [style]="{width: '60vw'}" [baseZIndex]="10000">
+  <form [formGroup]="updateUserInfoForm" >
+    <h2 class="text-center">Update Profile Info</h2>
+    <div class="form-container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input id="firstName" type="text" formControlName="firstName" class="form-control" />
+            <div *ngIf="f['firstName'].touched && f['firstName'].invalid" class="error">
+              *First Name is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" type="text" formControlName="lastName" class="form-control" />
+            <div *ngIf="f['lastName'].touched && f['lastName'].invalid" class="error">
+              *Last Name is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input id="dob" type="date" formControlName="dob" class="form-control" />
+            <div *ngIf="f['dob'].touched && f['dob'].invalid" class="error">
+              *Date Of Birth is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" class="form-control" readonly/>
+            <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
+              *Valid Email is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
+            <div *ngIf="f['phoneNumber'].touched && f['phoneNumber'].invalid" class="error">
+              *PhoneNumber is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="department">Department</label>
+            <input id="department" type="text" formControlName="department" class="form-control" />
+            <div *ngIf="f['department'].touched && f['department'].invalid" class="error">
+              *Department is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input id="address" formControlName="address" class="form-control">
+            <div *ngIf="f['address'].touched && f['address'].invalid" class="error">
+              *Address is required
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="updateFormSumbit(updateUserInfoForm)"></button>
+    <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="updatedialog=false"></button>
+  </ng-template>
+</p-dialog>

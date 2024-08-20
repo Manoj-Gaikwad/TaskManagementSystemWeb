@@ -1,8 +1,3 @@
-<div class="button-container" *ngIf="Role=='Manager'">
-  <button pButton pRipple type="button" label="New Task" icon="pi pi-plus" class="p-button-secondary"
-    (click)="showBasicDialog()"></button>
-</div>
-
 <p-dialog header="Create Task" [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
   <form [formGroup]="CreateTaskForm" (ngSubmit)="submitForm(CreateTaskForm)">
     <h2 class="text-center">Create Task</h2>
@@ -32,20 +27,21 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group ">
-                  <label for="description">AssignedTo</label><br>
-                  <p-dropdown [options]="allEmployeeData" [(ngModel)]="selectedEmployee" optionLabel="email" [filter]="true" filterBy="email"
-                      [showClear]="true" placeholder="Select an Employee" formControlName="assignedTo">
-                      <ng-template pTemplate="selectedItem" let-selectedEmployee>
-                        <div class="country-item country-item-value" *ngIf="selectedEmployee">
-                          <div>{{ selectedEmployee.email }}</div>
-                        </div>
-                      </ng-template>
-                      <ng-template let-employee pTemplate="item">
-                        <div class="country-item">
-                          <div>{{ employee.email }}</div>
-                        </div>
-                      </ng-template>
-                    </p-dropdown>
+                <label for="description">AssignedTo</label><br>
+                <p-dropdown [options]="allEmployeeData" [(ngModel)]="selectedEmployee" optionLabel="email"
+                  [filter]="true" filterBy="email" [showClear]="true" placeholder="Select an Employee"
+                  formControlName="assignedTo">
+                  <ng-template pTemplate="selectedItem" let-selectedEmployee>
+                    <div class="country-item country-item-value" *ngIf="selectedEmployee">
+                      <div>{{ selectedEmployee.email }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-employee pTemplate="item">
+                    <div class="country-item">
+                      <div>{{ employee.email }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
               </div>
             </div>
           </div>
@@ -54,7 +50,7 @@
               <div class="form-group">
                 <label for="createdBy">Created By</label>
                 <input type="email" formControlName="createdBy" id="createdBy" class="form-control"
-                  placeholder="Creater Email"  readonly>
+                  placeholder="Creater Email" readonly>
               </div>
             </div>
           </div>
@@ -63,7 +59,7 @@
               <div class="form-group">
                 <label for="managerId">Manager ID</label>
                 <input type="text" formControlName="managerId" id="managerId" class="form-control"
-                  placeholder="Enter Manager ID"  readonly>
+                  placeholder="Enter Manager ID" readonly>
               </div>
             </div>
           </div>
@@ -77,52 +73,146 @@
   </ng-template>
 </p-dialog>
 
-<p-table [value]="Alltasks" styleClass="p-datatable-gridlines"  [rows]="4" [rowsPerPageOptions]="[4,8,12,50,100]" [paginator]="true" [tableStyle]="{'min-width': '50rem'}" >
+<p-table #dt [value]="Alltasks" [(selection)]="selectedEmployee" dataKey="id" styleClass="p-datatable-customers"
+  [rowHover]="true" [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]" [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+  [globalFilterFields]="['title','description','assignedTo','createdBy','creationDate','complitionDate','isCompleted','managerId','taskId','uplodedfile']">
+  <ng-template pTemplate="caption">
+    <div class="table-header d-flex justify-content-between align-items-center">
+      <div class="button-container" *ngIf="Role=='Manager'">
+        <button pButton pRipple type="button" label="New Task" icon="pi pi-plus" class="p-button-secondary"
+          (click)="showBasicDialog()"></button>
+      </div>
+      <h2 class="table-title">List of Employees</h2>
+      <span class="p-input-icon-right">
+        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Global Search" />
+      </span>
+    </div>
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th>#</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Assigned To</th>
-      <th>Created By</th>
-      <th>Creation Date</th>
-      <th>Completion Date</th>
-      <th>Is Completed</th>
-      <th>Manager ID</th>
-      <th>Task ID</th>
-      <th>Status</th>
-      <th>Submit Task</th>
-      <th>Update Task</th>
+      <!-- <th pSortableColumn="title">Title<p-columnFilter type="text" field="title" display="menu" class="test2">
+        </p-columnFilter>
+      </th> -->
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          Title
+            <p-columnFilter type="text" field="title" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          Description
+            <p-columnFilter type="text" field="description" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          Assigned To
+            <p-columnFilter type="text" field="assignedTo" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          Created By 
+            <p-columnFilter type="text" field="createdBy" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          Creation Date 
+            <p-columnFilter type="text" field="creationDate" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          Complition Date
+            <p-columnFilter type="text" field="complitionDate" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          IsComplited
+            <p-columnFilter type="text" field="isCompleted" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          Manager Id
+            <p-columnFilter type="text" field="managerId" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          Task Id
+            <p-columnFilter type="text" field="taskId" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th style="min-width:15rem">
+        <div class="flex justify-content-center align-items-center">
+          Status
+            <p-columnFilter type="text" field="uplodedfile" display="menu"></p-columnFilter>
+        </div>
+      </th>
+      <th *ngIf="isFileUploaded()">Submit Task</th>
+      <th *ngIf="isupdatetask()">Update Task</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-task let-i="rowIndex">
-    <tr>
-      <td>{{i + 1}}</td>
-      <td>{{task.title}}</td>
-      <td>{{task.description}}</td>
-      <td>{{task.assignedTo}}</td>
-      <td>{{task.createdBy}}</td>
-      <td>{{task.creationDate}}</td>
-      <td>{{task.complitionDate}}</td>
-      <td>{{task.isCompleted}}</td>
-      <td>{{task.managerId}}</td>
-      <td>{{task.taskId}}</td>
-      <td>{{task.uplodedfile}}</td>
+  <ng-template pTemplate="body" let-employee>
+    <tr class="p-selectable-row">
       <td>
-        <div class="button-container"  *ngIf="task.uplodedfile!='Yes'">
-        <button pButton pRipple type="button" label="Upload File" icon="pi pi-upload" class="p-button-secondary"
-          (click)="uploadFileDialog(task.taskId)"></button>
-      </div>
-    </td>
-    <td>
-      <div class="button-container"  *ngIf="task.uplodedfile!='Yes'">
-      <button pButton pRipple type="button" label="Update Task" icon="pi pi-wrench" class="p-button-secondary"
-        (click)="getTaskDetails(task.taskId)"></button>
-    </div>
-  </td>
+        {{employee.title}}
+      </td>
+      <td>
+        {{employee.description}}
+      </td>
+      <td>
+        {{employee.assignedTo}}
+      </td>
+      <td>
+        {{employee.createdBy}}
+      </td>
+      <td>
+        {{employee.creationDate}}
+      </td>
+      <td>
+        {{employee.complitionDate}}
+      </td>
+      <td>
+        {{employee.isCompleted}}
+      </td>
+      <td>
+        {{employee.managerId}}
+      </td>
+      <td>
+        {{employee.taskId}}
+      </td>
+      <td>
+        {{employee.uplodedfile}}
+      </td>
+      <td>
+        <div class="button-container" *ngIf="employee.uplodedfile!='Yes'">
+          <button pButton pRipple type="button" label="Upload File" icon="pi pi-upload" class="p-button-secondary"
+            (click)="uploadFileDialog(employee.taskId)"></button>
+        </div>
+      </td>
+      <td>
+        <div class="button-container" *ngIf="employee.uplodedfile!='Yes' && Role=='Manager'">
+          <button pButton pRipple type="button" label="Update Task" icon="pi pi-wrench" class="p-button-secondary"
+            (click)="getTaskDetails(employee.taskId)"></button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8">No Employee found.</td>
     </tr>
   </ng-template>
 </p-table>
+
 
 <!--File Upload  Dialog-->
 <p-dialog header="Upload File" [(visible)]="displayUpload" [style]="{width: '60vw'}" [baseZIndex]="10000">
@@ -131,20 +221,19 @@
     <div class="form-container">
       <div class="row">
         <div class="col-md-6">
-              <div class="form-group">
-                <label for="title">Upload File</label>
-                <input type="File" formControlName="File" id="title" class="form-control" placeholder="Upload File"
-                (change)="onFileChange($event)"  required>
-              </div>
+          <div class="form-group">
+            <label for="title">Upload File</label>
+            <input type="File" formControlName="File" id="title" class="form-control" placeholder="Upload File"
+              (change)="onFileChange($event)" required>
+          </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label for="title">TaskId</label>
-            <input type="number" formControlName="TaskId" id="title" class="form-control" placeholder="Task Id"
-              required readonly>
+            <input type="number" formControlName="TaskId" id="title" class="form-control" placeholder="Task Id" required
+              readonly>
           </div>
-
-    </div>
+        </div>
       </div>
     </div>
   </form>
@@ -186,20 +275,21 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group ">
-                  <label for="description">AssignedTo</label><br>
-                  <p-dropdown [options]="allEmployeeData" [(ngModel)]="updateSelectedEmployee" optionLabel="email" [filter]="true" filterBy="email"
-                      [showClear]="true" placeholder="Select an Employee" formControlName="assignedTo">
-                      <ng-template pTemplate="selectedItem" let-selectedEmployee>
-                        <div class="country-item country-item-value" *ngIf="selectedEmployee">
-                          <div>{{ selectedEmployee.email }}</div>
-                        </div>
-                      </ng-template>
-                      <ng-template let-employee pTemplate="item">
-                        <div class="country-item">
-                          <div>{{ employee.email }}</div>
-                        </div>
-                      </ng-template>
-                    </p-dropdown>
+                <label for="description">AssignedTo</label><br>
+                <p-dropdown [options]="allEmployeeData" [(ngModel)]="updateSelectedEmployee" optionLabel="email"
+                  [filter]="true" filterBy="email" [showClear]="true" placeholder="Select an Employee"
+                  formControlName="assignedTo">
+                  <ng-template pTemplate="selectedItem" let-selectedEmployee>
+                    <div class="country-item country-item-value" *ngIf="selectedEmployee">
+                      <div>{{ selectedEmployee.email }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-employee pTemplate="item">
+                    <div class="country-item">
+                      <div>{{ employee.email }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
               </div>
             </div>
           </div>
@@ -208,7 +298,7 @@
               <div class="form-group">
                 <label for="createdBy">Created By</label>
                 <input type="email" formControlName="createdBy" id="createdBy" class="form-control"
-                  placeholder="Creater Email"  readonly>
+                  placeholder="Creater Email" readonly>
               </div>
             </div>
           </div>
@@ -217,7 +307,7 @@
               <div class="form-group">
                 <label for="managerId">Manager ID</label>
                 <input type="text" formControlName="managerId" id="managerId" class="form-control"
-                  placeholder="Enter Manager ID"  readonly>
+                  placeholder="Enter Manager ID" readonly>
               </div>
             </div>
           </div>
@@ -230,4 +320,3 @@
     <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="updateBasic=false"></button>
   </ng-template>
 </p-dialog>
-

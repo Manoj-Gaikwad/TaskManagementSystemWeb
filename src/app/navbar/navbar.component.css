@@ -9,3 +9,7 @@
   font-size: 12px;
   margin-top: 5px;
 }
+
+:host ::ng-deep .p-password input {
+  width: 21rem
+}

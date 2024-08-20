@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { Upload } from 'src/Models/upload';
+import {Customer} from 'src/Models/customer';
 
 
 
@@ -87,5 +88,12 @@ export class TaskService {
   GetTaskById(data:any){
    return this.http.get(`${this.apiUrl}/Task/GetTaskById?TaskId=${data}`);
   }
+
+  getCustomersLarge() {
+    return this.http.get<any>('assets/customers-large.json')
+        .toPromise()
+        .then(res => <Customer[]>res.data)
+        .then(data => { return data; });
+}
 
 }

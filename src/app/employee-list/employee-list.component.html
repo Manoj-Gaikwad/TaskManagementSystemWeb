@@ -1,8 +1,3 @@
-<div class="button-container">
-  <button pButton pRipple type="button" label="New Employee" icon="pi pi-plus" class="p-button-secondary"
-    (click)="showBasicDialog()"></button>
-</div>
-
 <p-dialog [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <h2 class="text-center">Create New Employee</h2>
@@ -58,11 +53,11 @@
         <div class="col-md-3">
           <div class="form-group">
             <label for="role">Role</label><br>
-            <p-dropdown [options]="Roles" [(ngModel)]="selectedCity" placeholder="Select Role" optionLabel="name" [showClear]="true" formControlName="role"></p-dropdown>
+            <p-dropdown [options]="Roles" [(ngModel)]="selectedCity" placeholder="Select Role" optionLabel="name"
+              [showClear]="true" formControlName="role"></p-dropdown>
             <div *ngIf="f['role'].touched && f['role'].invalid" class="error">
               *Role is required
             </div>
-
             <!-- <select id="role" formControlName="role" class="form-control">
               <option>Employee</option>
               <option>Manager</option>
@@ -119,47 +114,92 @@
   </ng-template>
 </p-dialog>
 
-
-
-
-<p-table [value]="getManagerWiseEmpList" expandableRows="true" [rows]="5" [rowsPerPageOptions]="[5,10,15,50]" [paginator]="true"  rowExpandMode="single" styleClass="p-datatable-gridlines"
-  [tableStyle]="{'min-width': '50rem'}">
+<p-table #dt [value]="getManagerWiseEmpList" [(selection)]="selectedEmployee" dataKey="id"
+  styleClass="p-datatable-customers" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+  [globalFilterFields]="['firstName','LastName','email','contact','dob','address','role']">
+  <ng-template pTemplate="caption">
+    <div class="table-header d-flex justify-content-between align-items-center">
+      <div class="button-container">
+        <button pButton pRipple type="button" label="New Employee" icon="pi pi-plus" class="p-button-secondary"
+          (click)="showBasicDialog()"></button>
+      </div>
+      <h2 class="table-title">List of Employees</h2>
+      <span class="p-input-icon-right">
+        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Global Search" />
+      </span>
+    </div>
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th>#</th>
-      <th>FirstName</th>
-      <th>LastName</th>
-      <th>Email</th>
-      <th>PhoneNumber</th>
-      <th>DateOfBirth</th>
-      <th>Address</th>
-      <th>Role</th>
-      <th>UpdateInfo</th>
-
+      <th pSortableColumn="firstName">First Name<p-columnFilter type="text" field="firstName" display="menu"
+          class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="lastName">LastName<p-columnFilter type="text" field="lastName" display="menu" class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="email">Email<p-columnFilter type="text" field="email" display="menu" class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="phoneNumber">Contact <p-columnFilter type="text" field="phoneNumber" display="menu"
+          class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="dob">DOB <p-columnFilter type="text" field="dob" display="menu" class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="address">Address <p-columnFilter type="text" field="address" display="menu" class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="role">Role
+      </th>
+      <th pSortableColumn="role">Modify
+      </th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-product let-i="rowIndex">
-    <tr>
-      <td>{{i + 1}}</td>
-      <td>{{product.firstName}}</td>
-      <td>{{product.lastName}}</td>
-      <td>{{product.email}}</td>
-      <td>{{product.phoneNumber}}</td>
-      <td>{{product.dob}}</td>
-      <td>{{product.address}}</td>
-      <td>{{product.role}}</td>
-      <td><div class="button-container">
+  <ng-template pTemplate="body" let-employee>
+    <tr class="p-selectable-row">
+      <td>
+        {{employee.firstName}}
+      </td>
+      <td>
+        {{employee.lastName}}
+      </td>
+      <td>
+        {{employee.email}}
+      </td>
+      <td>
+        {{employee.phoneNumber}}
+      </td>
+      <td>
+        {{employee.dob}}
+      </td>
+      <td>
+        {{employee.address}}
+      </td>
+      <td>
+        {{employee.role}}
+      </td>
+      <td style="text-align: center">
         <button pButton pRipple type="button" label="Update" icon="pi pi-wrench" class="p-button-secondary"
-          (click)="showUpdateDialog(product.email)"></button>
-      </div></td>
+          (click)="showUpdateDialog(employee.email)"></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8">No Employee found.</td>
     </tr>
   </ng-template>
 </p-table>
 
-<!------------------------------------------------------------------------------------------------------------>
 
 <p-dialog [(visible)]="updatedialog" [style]="{width: '60vw'}" [baseZIndex]="10000">
-  <form [formGroup]="updateUserInfoForm" >
+  <form [formGroup]="updateUserInfoForm">
     <h2 class="text-center">Update Profile Info</h2>
     <div class="form-container">
       <div class="row">
@@ -195,7 +235,7 @@
         <div class="col-md-5">
           <div class="form-group">
             <label for="email">Email</label>
-            <input id="email" type="email" formControlName="email" class="form-control" readonly/>
+            <input id="email" type="email" formControlName="email" class="form-control" readonly />
             <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
               *Valid Email is required
             </div>

@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TaskService } from '../../Sevices/task.service';
 import { TableModule } from 'primeng/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifyService } from 'src/Sevices/notify.service';
 import { Register } from 'src/Models/register';
 import { AuthService } from '../../Sevices/auth.service';
+import { Table } from 'primeng/table';
+import { PrimeNGConfig } from 'primeng/api';
 
 interface Role {
   name: string;
@@ -31,11 +33,18 @@ export class EmployeeListComponent implements OnInit {
   updatedialog!: boolean;
   updateUserEmail: any;
 
+  selectedEmployee!: any[];
+
+  loading: boolean = true;
+
+  @ViewChild('dt') table!: Table;
+
   constructor(
     private taskService: TaskService,
     private fb: FormBuilder,
     private authservice: AuthService,
-    private notifyService: NotifyService
+    private notifyService: NotifyService,
+    private primengConfig: PrimeNGConfig
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -62,8 +71,9 @@ export class EmployeeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getAllEmployeeList();
     this.GetManagerWiseEmployee();
+
+    this.primengConfig.ripple = true;
   }
   get f() {
     return this.registerForm.controls;
@@ -88,17 +98,72 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
+  onActivityChange(event: any) {
+    const value = event.target.value;
+    if (value && value.trim().length) {
+      const activity = parseInt(value);
+
+      if (!isNaN(activity)) {
+        this.table.filter(activity, 'activity', 'gte');
+      }
+    }
+  }
+  onDateSelect(value: any) {
+    this.table.filter(this.formatDate(value), 'date', 'equals');
+  }
+
+  onGlobalFilter(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.table.filterGlobal(inputElement.value, 'contains');
+  }
+
+  clear(table: Table) {
+    table.clear();
+  }
+
+  onFilter(event: Event, field: string): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.table.filter(inputElement.value, field, 'contains');
+  }
+
+  formatDate(date: any) {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    if (month < 10) {
+      month = '0' + month;
+    }
+
+    if (day < 10) {
+      day = '0' + day;
+    }
+
+    return date.getFullYear() + '-' + month + '-' + day;
+  }
+
+  onRepresentativeChange(event: any) {
+    this.table.filter(event.value, 'representative', 'in');
+  }
+
   showBasicDialog() {
     this.displayBasic = true;
   }
+
   getAllEmployeeList() {
     this.taskService.getAllEmployeeList().subscribe((data: any) => {
       this.allEmployeeList = data;
     });
   }
+
   GetManagerWiseEmployee() {
     this.taskService.GetManagerWiseEmployee().subscribe((data: any) => {
       this.getManagerWiseEmpList = data.data;
+      if(this.getManagerWiseEmpList!=null){
+        this.loading=false;
+      }
+      else{
+        this.loading=true;
+      }
       this.managerEmail = data.manager.email;
       this.ManagerId = data.manager.id;
       this.checkRole = data.manager.role;
@@ -141,6 +206,7 @@ export class EmployeeListComponent implements OnInit {
         }
       });
   }
+
   updateFormSumbit(data: any) {
     this.updateProfile = data.value;
     this.updateProfile.dob = new Date(data.value.dob).toISOString();

@@ -37,7 +37,13 @@ import { DialogModule } from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
 import {FileUploadModule} from 'primeng/fileupload';
 import {RadioButtonModule} from 'primeng/radiobutton';
-
+import {MultiSelectModule} from 'primeng/multiselect';
+import {ContextMenuModule} from 'primeng/contextmenu';
+import {InputTextModule} from 'primeng/inputtext';
+import {ProgressBarModule} from 'primeng/progressbar';
+import {CalendarModule} from 'primeng/calendar';
+import {SliderModule} from 'primeng/slider';
+import {PasswordModule} from 'primeng/password';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -79,6 +85,13 @@ export function tokenGetter() {
     FileUploadModule,
     HttpClientModule,
     RadioButtonModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    InputTextModule,
+    ProgressBarModule,
+    CalendarModule,
+    SliderModule,
+    PasswordModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

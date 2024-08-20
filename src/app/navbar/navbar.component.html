@@ -25,6 +25,7 @@
             <!-- <p-splitButton label="Welcome {{this.userinfo.firstName}} " [model]="this.items"
               styleClass="p-button-rounded p-button-secondary mt-"></p-splitButton> -->
               <p-splitButton label="Welcome {{this.userinfo.firstName}}" [model]="items" styleClass="p-button-raised p-button-secondary"></p-splitButton>
+
           </li>
         </ng-container>
       </ul>
@@ -118,5 +119,30 @@
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Submit" icon="pi pi-check" (click)="onSubmit(updateProfileForm)"></button>
     <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayBasic=false"></button>
+  </ng-template>
+</p-dialog>
+
+<!--Update Password-->
+<p-dialog [(visible)]="displayUpdatePassword" [style]="{width: '30vw',height:'32vw'}" [baseZIndex]="10000">
+    <h2 class="text-center">Update Password</h2>
+    <div class="form-container">
+      <div class="row">
+        <div class="col-md-12 mb-4">
+          <div class="form-group">
+            <label for="CurrentPassword">Current Password</label><br>
+            <p-password [(ngModel)]="currentPassword" [toggleMask]="true"></p-password>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="NewPassword">New Password</label><br>
+             <p-password [(ngModel)]="newPassword" [toggleMask]="true" style="width: 300px;"></p-password>
+          </div>
+        </div>
+      </div>
+    </div>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="modifyPassword()"></button>
+    <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayUpdatePassword=false"></button>
   </ng-template>
 </p-dialog>

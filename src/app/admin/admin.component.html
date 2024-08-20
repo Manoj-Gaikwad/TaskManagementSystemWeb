@@ -1,25 +1,69 @@
+<p-table #dt [value]="performanceData" [(selection)]="selectedEmployee" dataKey="id" styleClass="p-datatable-customers"
+  [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+  [globalFilterFields]="['managerId','managerName','empName','month','year','completedTaskCount']">
+  <ng-template pTemplate="caption">
+    <div class="table-header d-flex justify-content-between align-items-center">
+      <h2 class="table-title">List of Employees</h2>
+      <span class="p-input-icon-right">
+        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Global Search" />
+      </span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="managerId">manager Id<p-columnFilter type="text" field="managerId" display="menu"
+          class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="managerName">Manager Email<p-columnFilter type="text" field="managerName" display="menu"
+          class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="empName">Employee Email<p-columnFilter type="text" field="empName" display="menu"
+          class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="month">Month <p-columnFilter type="text" field="month" display="menu" class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="year">Year <p-columnFilter type="text" field="year" display="menu" class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="completedTaskCount">Completed Task Count <p-columnFilter type="text"
+          field="completedTaskCount" display="menu" class="test2">
+        </p-columnFilter>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-employee>
+    <tr class="p-selectable-row">
+      <td>
+        {{employee.managerId}}
+      </td>
+      <td>
+        {{employee.managerName}}
+      </td>
+      <td>
+        {{employee.empName}}
+      </td>
+      <td>
+        {{employee.month}}
+      </td>
+      <td>
+        {{employee.year}}
+      </td>
+      <td>
+        {{employee.completedTaskCount}}
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8">No Employee found.</td>
+    </tr>
+  </ng-template>
+</p-table>
 
-  <p-table [value]="performanceData" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>#</th>
-        <th>managerId</th>
-        <th>managerName</th>
-        <th>empName</th>
-        <th>completedTaskCount</th>
-        <th>month</th>
-        <th>year</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-product let-i="rowIndex">
-      <tr>
-        <td>{{i + 1}}</td>
-        <td>{{product.managerId}}</td>
-        <td>{{product.managerName}}</td>
-        <td>{{product.empName}}</td>
-        <td>{{product.completedTaskCount}}</td>
-        <td>{{product.month}}</td>
-        <td>{{product.year}}</td>
-      </tr>
-    </ng-template>
-  </p-table>

@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Register } from 'src/Models/register';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifyService } from 'src/Sevices/notify.service';
+import { UpdatePasswordModel } from 'src/Models/UpdatePasswordModel';
 
 interface Role {
   name: string;
@@ -26,6 +27,10 @@ export class NavbarComponent implements OnInit {
   selectedCity!: Role;
   Roles!: Role[];
   updateProfileData: any;
+  displayUpdatePassword!:boolean;
+  currentPassword!: string;
+  newPassword!: string;
+  UpdatePassModel!:UpdatePasswordModel;
 
   constructor(
     private authService: AuthService,
@@ -67,16 +72,52 @@ export class NavbarComponent implements OnInit {
           this.logout();
         },
       },
+      {
+        label: 'Update Password',
+        icon: 'pi pi-wrench',
+        command: () => {
+          this.UpdatePassword();
+        },
+      },
       // {label: 'Angular.io', icon: 'pi pi-info', url: 'http://angular.io'},
       // {separator:true},
       // {label: 'Setup', icon: 'pi pi-cog', routerLink: ['/setup']}
     ];
   }
 
+  UpdatePassword(){
+    this.displayUpdatePassword=true;
+    this.currentPassword='';
+    this.newPassword='';
+  }
+
+  modifyPassword(){
+    this.UpdatePassModel = new UpdatePasswordModel();
+    this.UpdatePassModel = {
+      CurrentPassword: this.currentPassword,
+      NewPassword: this.newPassword,
+      Email: this.userinfo.email
+  };
+    if(this.UpdatePassModel.CurrentPassword !=null && this.UpdatePassModel.NewPassword!=null && this.UpdatePassModel.Email!=null){
+       this.authService.modifyPassword(this.UpdatePassModel).subscribe((response:any)=>{
+        if(response.message=='Password updated successfully')
+        {
+          this.currentPassword='';
+          this.newPassword='';
+          this.displayUpdatePassword=false;
+          this.notifyService.showSuccess();
+        }
+        else{
+          this.notifyService.showError();
+        }
+       })
+      }
+  }
   logout(): void {
     this.authService.logout();
     window.location.reload();
   }
+
   onSubmit(data: any) {
     this.updateProfileData = data.value;
     this.updateProfileData.dob = new Date(data.value.dob).toISOString();
@@ -129,5 +170,5 @@ export class NavbarComponent implements OnInit {
   get f() {
     return this.updateProfileForm.controls;
   }
-  UpdateInfo() {}
+
 }

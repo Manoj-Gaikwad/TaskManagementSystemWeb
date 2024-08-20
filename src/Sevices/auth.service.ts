@@ -48,7 +48,14 @@ export class AuthService {
           );
           this.isAuthenticatedSubject.next(true);
           this.userInfo.next(response);
-          this.router.navigate(['/home']);
+          if(response.roles =="Employee" || response.roles=="Manager")
+          {
+            this.router.navigate(['/task']);
+          }
+          else{
+            this.router.navigate(['/admin']);
+          }
+
         }
         return response;
       }),
@@ -98,5 +105,8 @@ export class AuthService {
       }),
       responseType: 'json', // Ensure responseType is text
     });
+  }
+  modifyPassword(data:any){
+    return this.http.post(`${this.apiUrl}/UpdatePassword`, data);
   }
 }

@@ -74,3 +74,14 @@
   max-height: 400px; /* Adjust the height as needed */
   overflow: auto;
 }
+
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding:0px;
+}

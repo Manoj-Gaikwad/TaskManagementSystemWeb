@@ -30,6 +30,8 @@ export class AuthService {
     return this.http.post(this.apiUrl + '/register', register);
   }
 
+ 
+
   login(loginData: login): Observable<any> {
     return this.http.post(this.apiUrl + '/login', loginData).pipe(
       map((response: any) => {
@@ -72,6 +74,11 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  clearSession(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  }
+
   isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token || '');
@@ -89,6 +96,7 @@ export class AuthService {
     const user = this.getUser();
     return user.roles || '';
   }
+
   private isTokenValid(): boolean {
     const token = this.getToken();
     return !this.jwtHelper.isTokenExpired(token);
@@ -106,6 +114,7 @@ export class AuthService {
       responseType: 'json', // Ensure responseType is text
     });
   }
+
   modifyPassword(data:any){
     return this.http.post(`${this.apiUrl}/UpdatePassword`, data);
   }

@@ -1,1 +1,283 @@
-<p>manager works!</p>
+<p-dialog [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
+    <form [formGroup]="managerForm" (ngSubmit)="onSubmit()">
+      <h2 class="text-center">Create New Manager</h2>
+      <div class="form-container">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input id="firstName" type="text" formControlName="firstName" class="form-control" />
+              <div *ngIf="f['firstName'].touched && f['firstName'].invalid" class="error">
+                *First Name is required
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input id="lastName" type="text" formControlName="lastName" class="form-control" />
+              <div *ngIf="f['lastName'].touched && f['lastName'].invalid" class="error">
+                *Last Name is required
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="dob">Date of Birth</label>
+              <input id="dob" type="date" formControlName="dob" class="form-control" />
+              <div *ngIf="f['dob'].touched && f['dob'].invalid" class="error">
+                *Date Of Birth is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" type="email" formControlName="email" class="form-control" />
+              <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
+                *Valid Email is required
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input id="password" type="password" formControlName="password" class="form-control" />
+
+              <div *ngIf="f['password'].touched && f['password'].invalid" class="error">
+                <div *ngIf="f['password'].errors?.['required']">
+                  *Password is required
+                </div>
+                <div *ngIf="f['password'].errors?.['minlength']">
+                  *Password should be at least 6 characters
+                </div>
+                <div *ngIf="f['password'].errors?.['pattern']">
+                  *Password must contain at least one uppercase and one lowercase letter, one number, and one special character ,
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number</label>
+              <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
+              <div *ngIf="f['phoneNumber'].touched && f['phoneNumber'].invalid" class="error">
+                *PhoneNumber is required
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="department">Department</label>
+              <input id="department" type="text" formControlName="department" class="form-control" />
+              <div *ngIf="f['department'].touched && f['department'].invalid" class="error">
+                *Department is required
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="role">Role</label><br>
+              <p-dropdown [options]="Roles" [(ngModel)]="selectedRole" placeholder="Select Role" optionLabel="name"
+                [showClear]="true" formControlName="role"  class="custom-dropdown"></p-dropdown>
+              <div *ngIf="f['role'].touched && f['role'].invalid" class="error">
+                *Role is required
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input id="address" formControlName="address" class="form-control">
+              <div *ngIf="f['address'].touched && f['address'].invalid" class="error">
+                *Address is required
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple label="Submit" icon="pi pi-check" (click)="onSubmit()" [disabled]="managerForm.invalid"></button>
+      <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayBasic=false"></button>
+    </ng-template>
+  </p-dialog>
+
+<p-table #dt [value]="allManagerList" dataKey="id"
+  styleClass="p-datatable-customers" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+  [globalFilterFields]="['firstName','LastName','email','contact','dob','address','role']">
+  <ng-template pTemplate="caption">
+    <div class="table-header d-flex justify-content-between align-items-center">
+      <div class="button-container">
+        <button pButton pRipple type="button" label="Add New User" icon="pi pi-plus" class="p-button-secondary"
+          (click)="showBasicDialog()"></button>
+      </div>
+      <h2 class="table-title">List of Managers</h2>
+      <span class="p-input-icon-right">
+        <button pButton label="Clear" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Global Search" />
+      </span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="firstName" style="min-width:5rem">First Name<p-columnFilter type="text" field="firstName" display="menu"
+          class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="lastName" style="min-width:5rem">LastName<p-columnFilter type="text" field="lastName" display="menu" class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="email" style="min-width:10rem">Email<p-columnFilter type="text" field="email" display="menu" class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="phoneNumber" style="min-width:8rem">Contact <p-columnFilter type="text" field="phoneNumber" display="menu"
+          class="test2">
+        </p-columnFilter>
+      </th>
+      <th pSortableColumn="department" style="min-width:8rem">Department <p-columnFilter type="text" field="department" display="menu" class="test2">
+      </p-columnFilter>
+    </th>
+      <th>Role</th>
+      <th>Modify/Remove</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr class="p-selectable-row">
+      <td>
+        {{user.firstName}}
+      </td>
+      <td>
+        {{user.lastName}}
+      </td>
+      <td>
+        {{user.email}}
+      </td>
+      <td>
+        {{user.phoneNumber}}
+      </td>
+      <td>
+        {{user.department}}
+      </td>
+      <td>
+        {{user.role}}
+      </td>
+      <td style="text-align: center">
+        <button pButton pRipple type="button"  icon="pi pi-pencil" class="p-button-secondary"
+          (click)="showUpdateDialog(user.email)"></button> &nbsp;
+          <p-button (click)="showconformDeleteDialog(user.email)" icon="pi pi-times" styleClass="p-button-secondary"></p-button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8">No Employee found.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+
+<p-dialog [(visible)]="updatedialog" [style]="{width: '60vw'}" [baseZIndex]="10000">
+  <form [formGroup]="updateUserInfoForm">
+    <h2 class="text-center">Update User Info</h2>
+    <div class="form-container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input id="firstName" type="text" formControlName="firstName" class="form-control" />
+            <div *ngIf="j['firstName'].touched && j['firstName'].invalid" class="error">
+              *First Name is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" type="text" formControlName="lastName" class="form-control" />
+            <div *ngIf="j['lastName'].touched && j['lastName'].invalid" class="error">
+              *Last Name is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input id="dob" type="date" formControlName="dob" class="form-control" />
+            <div *ngIf="j['dob'].touched && j['dob'].invalid" class="error">
+              *Date Of Birth is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" class="form-control" readonly />
+            <div *ngIf="j['email'].touched && j['email'].invalid" class="error">
+              *Valid Email is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
+            <div *ngIf="j['phoneNumber'].touched && j['phoneNumber'].invalid" class="error">
+              *PhoneNumber is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="department">Department</label>
+            <input id="department" type="text" formControlName="department" class="form-control" />
+            <div *ngIf="j['department'].touched && j['department'].invalid" class="error">
+              *Department is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input id="address" formControlName="address" class="form-control">
+            <div *ngIf="j['address'].touched && j['address'].invalid" class="error">
+              *Address is required
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="sumbit_updateForm(updateUserInfoForm)" [disabled]="updateUserInfoForm.invalid"></button>
+    <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="updatedialog=false"></button>
+  </ng-template>
+</p-dialog>
+
+
+<!-- Remove Employee dialog Box-->
+
+<p-dialog header="Delete Record" [(visible)]="conformDelete" [style]="{width: '40vw'}">
+    <p>Are you realy want to delete this Record ?</p>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="deleteRecord()" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

@@ -26,15 +26,15 @@ export class EmployeeListComponent implements OnInit {
   managerEmail!: any;
   ManagerId!: any;
   Roles!: Role[];
-  selectedCity!: Role;
+  selectedRole!: Role;
   checkRole!: any;
   updateProfile!: Register;
   updateUserInfoForm!: FormGroup;
   updatedialog!: boolean;
   updateUserEmail: any;
-
+  RemoveRecordemail!:string;
   selectedEmployee!: any[];
-
+  conformDelete!:boolean;
   loading: boolean = true;
 
   @ViewChild('dt') table!: Table;
@@ -50,7 +50,7 @@ export class EmployeeListComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6),  Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/) ]],
       phoneNumber: ['', Validators.required],
       dob: ['', Validators.required],
       address: ['', Validators.required],
@@ -78,6 +78,9 @@ export class EmployeeListComponent implements OnInit {
   get f() {
     return this.registerForm.controls;
   }
+  get j() {
+    return this.updateUserInfoForm.controls;
+  }
 
   onSubmit() {
     this.registerData = this.registerForm.value;
@@ -86,7 +89,7 @@ export class EmployeeListComponent implements OnInit {
     this.registerData.role = role;
     this.registerData.dob = new Date(this.registerData.dob).toISOString();
     this.authservice.register(this.registerData).subscribe((response: any) => {
-      if (response != null || '') {
+      if (response.result == 'User created successfully') {
         this.notifyService.showSuccess();
         this.registerForm.reset();
         this.GetManagerWiseEmployee();
@@ -158,11 +161,10 @@ export class EmployeeListComponent implements OnInit {
   GetManagerWiseEmployee() {
     this.taskService.GetManagerWiseEmployee().subscribe((data: any) => {
       this.getManagerWiseEmpList = data.data;
-      if(this.getManagerWiseEmpList!=null){
-        this.loading=false;
-      }
-      else{
-        this.loading=true;
+      if (this.getManagerWiseEmpList != null) {
+        this.loading = false;
+      } else {
+        this.loading = true;
       }
       this.managerEmail = data.manager.email;
       this.ManagerId = data.manager.id;
@@ -222,5 +224,28 @@ export class EmployeeListComponent implements OnInit {
           this.notifyService.showError();
         }
       });
+  }
+
+
+  showconformDeleteDialog(data:any){
+    debugger
+    this.RemoveRecordemail=data;
+    this.conformDelete=true;
+  }
+  deleteRecord()
+  {
+    this.conformDelete=false;
+    this.taskService.DeleteRecoredEmployee(this.RemoveRecordemail).subscribe(data=>{
+      debugger
+      if(data!=null)
+      {
+         this.GetManagerWiseEmployee();
+        this.notifyService.showSuccess();
+
+      }
+      else{
+        this.notifyService.showError();
+      }
+    })
   }
 }

@@ -2,7 +2,7 @@
   <form [formGroup]="CreateTaskForm" (ngSubmit)="submitForm(CreateTaskForm)">
     <h2 class="text-center">Create Task</h2>
     <div class="form-container">
-      <div class="row" let i=index>
+      <div class="row">
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-12">
@@ -10,6 +10,10 @@
                 <label for="title">Title</label>
                 <input type="text" formControlName="title" id="title" class="form-control" placeholder="Enter Title"
                   required>
+                <!-- Error message for Title -->
+                <div *ngIf="CreateTaskForm.get('title')?.touched && CreateTaskForm.get('title')?.invalid" class="error">
+                  <div *ngIf="CreateTaskForm.get('title')?.errors?.['required']">*Title is required</div>
+                </div>
               </div>
             </div>
           </div>
@@ -19,6 +23,11 @@
                 <label for="description">Description</label>
                 <textarea id="description" formControlName="description" class="form-control"
                   placeholder="Enter Description" rows="4" required></textarea>
+                <!-- Error message for Description -->
+                <div *ngIf="CreateTaskForm.get('description')?.touched && CreateTaskForm.get('description')?.invalid"
+                  class="error">
+                  <div *ngIf="CreateTaskForm.get('description')?.errors?.['required']">*Description is required</div>
+                </div>
               </div>
             </div>
           </div>
@@ -26,8 +35,8 @@
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-12">
-              <div class="form-group ">
-                <label for="description">AssignedTo</label><br>
+              <div class="form-group">
+                <label for="assignedTo">Assigned To</label><br>
                 <p-dropdown [options]="allEmployeeData" [(ngModel)]="selectedEmployee" optionLabel="email"
                   [filter]="true" filterBy="email" [showClear]="true" placeholder="Select an Employee"
                   formControlName="assignedTo">
@@ -42,6 +51,11 @@
                     </div>
                   </ng-template>
                 </p-dropdown>
+                <!-- Error message for Assigned To -->
+                <div *ngIf="CreateTaskForm.get('assignedTo')?.touched && CreateTaskForm.get('assignedTo')?.invalid"
+                  class="error">
+                  <div *ngIf="CreateTaskForm.get('assignedTo')?.errors?.['required']">*Please select an employee</div>
+                </div>
               </div>
             </div>
           </div>
@@ -50,7 +64,7 @@
               <div class="form-group">
                 <label for="createdBy">Created By</label>
                 <input type="email" formControlName="createdBy" id="createdBy" class="form-control"
-                  placeholder="Creater Email" readonly>
+                  placeholder="Creator Email" readonly>
               </div>
             </div>
           </div>
@@ -59,7 +73,7 @@
               <div class="form-group">
                 <label for="managerId">Manager ID</label>
                 <input type="text" formControlName="managerId" id="managerId" class="form-control"
-                  placeholder="Enter Manager ID" readonly>
+                  placeholder="Manager ID" readonly>
               </div>
             </div>
           </div>
@@ -68,7 +82,8 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="submitForm(CreateTaskForm)"></button>
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="submitForm(CreateTaskForm)"
+      [disabled]="CreateTaskForm.invalid"></button>
     <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayBasic=false"></button>
   </ng-template>
 </p-dialog>
@@ -83,7 +98,7 @@
         <button pButton pRipple type="button" label="New Task" icon="pi pi-plus" class="p-button-secondary"
           (click)="showBasicDialog()"></button>
       </div>
-      <h2 class="table-title">List of Employees</h2>
+      <h2 class="table-title">List of Task</h2>
       <span class="p-input-icon-right">
         <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
         <i class="pi pi-search"></i>
@@ -99,65 +114,67 @@
       <th style="min-width:15rem">
         <div class="flex justify-content-center align-items-center">
           Title
-            <p-columnFilter type="text" field="title" display="menu"></p-columnFilter>
+          <p-columnFilter type="text" field="title" display="menu"></p-columnFilter>
         </div>
       </th>
       <th style="min-width:15rem">
         <div class="flex justify-content-center align-items-center">
           Description
-            <p-columnFilter type="text" field="description" display="menu"></p-columnFilter>
+          <p-columnFilter type="text" field="description" display="menu"></p-columnFilter>
         </div>
       </th>
       <th style="min-width:15rem">
         <div class="flex justify-content-center align-items-center">
           Assigned To
-            <p-columnFilter type="text" field="assignedTo" display="menu"></p-columnFilter>
+          <p-columnFilter type="text" field="assignedTo" display="menu"></p-columnFilter>
         </div>
       </th>
       <th style="min-width:15rem">
         <div class="flex justify-content-center align-items-center">
-          Created By 
-            <p-columnFilter type="text" field="createdBy" display="menu"></p-columnFilter>
+          Created By
+          <p-columnFilter type="text" field="createdBy" display="menu"></p-columnFilter>
         </div>
       </th>
-      <th style="min-width:15rem">
+      <th style="min-width:12rem">
         <div class="flex justify-content-center align-items-center">
-          Creation Date 
-            <p-columnFilter type="text" field="creationDate" display="menu"></p-columnFilter>
+          Creation Date
+          <p-columnFilter type="text" field="creationDate" display="menu"></p-columnFilter>
         </div>
       </th>
-      <th style="min-width:15rem">
+      <th style="min-width:12rem">
         <div class="flex justify-content-center align-items-center">
           Complition Date
-            <p-columnFilter type="text" field="complitionDate" display="menu"></p-columnFilter>
+          <p-columnFilter type="text" field="complitionDate" display="menu"></p-columnFilter>
         </div>
       </th>
       <th style="min-width:15rem">
         <div class="flex justify-content-center align-items-center">
           IsComplited
-            <p-columnFilter type="text" field="isCompleted" display="menu"></p-columnFilter>
+          <p-columnFilter type="text" field="isCompleted" display="menu"></p-columnFilter>
         </div>
       </th>
       <th style="min-width:15rem">
         <div class="flex justify-content-center align-items-center">
           Manager Id
-            <p-columnFilter type="text" field="managerId" display="menu"></p-columnFilter>
+          <p-columnFilter type="text" field="managerId" display="menu"></p-columnFilter>
         </div>
       </th>
-      <th style="min-width:15rem">
+      <th style="min-width:10rem">
         <div class="flex justify-content-center align-items-center">
           Task Id
-            <p-columnFilter type="text" field="taskId" display="menu"></p-columnFilter>
+          <p-columnFilter type="text" field="taskId" display="menu"></p-columnFilter>
         </div>
       </th>
-      <th style="min-width:15rem">
+      <th style="min-width:10rem">
         <div class="flex justify-content-center align-items-center">
           Status
-            <p-columnFilter type="text" field="uplodedfile" display="menu"></p-columnFilter>
+          <p-columnFilter type="text" field="uplodedfile" display="menu"></p-columnFilter>
         </div>
       </th>
-      <th *ngIf="isFileUploaded()">Submit Task</th>
-      <th *ngIf="isupdatetask()">Update Task</th>
+      <th style="min-width:5rem" *ngIf="isFileUploaded()">Submit Task</th>
+      <th style="min-width:5rem" *ngIf="isupdatetask()">
+        <span *ngIf="Role=='Manager'">Modify Task</span>
+      </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-employee>
@@ -175,10 +192,10 @@
         {{employee.createdBy}}
       </td>
       <td>
-        {{employee.creationDate}}
+        {{employee.creationDate | date: 'dd/MM/yyyy'}}
       </td>
       <td>
-        {{employee.complitionDate}}
+        {{employee.complitionDate | date: 'dd/MM/yyyy'}}
       </td>
       <td>
         {{employee.isCompleted}}
@@ -194,13 +211,13 @@
       </td>
       <td>
         <div class="button-container" *ngIf="employee.uplodedfile!='Yes'">
-          <button pButton pRipple type="button" label="Upload File" icon="pi pi-upload" class="p-button-secondary"
+          <button pButton pRipple type="button" icon="pi pi-upload" class="p-button-secondary"
             (click)="uploadFileDialog(employee.taskId)"></button>
         </div>
       </td>
       <td>
         <div class="button-container" *ngIf="employee.uplodedfile!='Yes' && Role=='Manager'">
-          <button pButton pRipple type="button" label="Update Task" icon="pi pi-wrench" class="p-button-secondary"
+          <button pButton pRipple type="button" icon="pi pi-wrench" class="p-button-warning"
             (click)="getTaskDetails(employee.taskId)"></button>
         </div>
       </td>
@@ -208,7 +225,7 @@
   </ng-template>
   <ng-template pTemplate="emptymessage">
     <tr>
-      <td colspan="8">No Employee found.</td>
+      <td colspan="8">No Task found.</td>
     </tr>
   </ng-template>
 </p-table>
@@ -258,6 +275,9 @@
                 <label for="title">Title</label>
                 <input type="text" formControlName="title" id="title" class="form-control" placeholder="Enter Title"
                   required>
+                <div *ngIf="UpdateTaskForm.get('title')?.touched && UpdateTaskForm.get('title')?.invalid" class="error">
+                  <div *ngIf="UpdateTaskForm.get('title')?.errors?.['required']">*Title is required</div>
+                </div>
               </div>
             </div>
           </div>
@@ -267,6 +287,10 @@
                 <label for="description">Description</label>
                 <textarea id="description" formControlName="description" class="form-control"
                   placeholder="Enter Description" rows="4" required></textarea>
+                <div *ngIf="UpdateTaskForm.get('description')?.touched && UpdateTaskForm.get('description')?.invalid"
+                  class="error">
+                  <div *ngIf="UpdateTaskForm.get('description')?.errors?.['required']">*Title is required</div>
+                </div>
               </div>
             </div>
           </div>
@@ -275,7 +299,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group ">
-                <label for="description">AssignedTo</label><br>
+                <label for="AssignedTo">AssignedTo</label><br>
                 <p-dropdown [options]="allEmployeeData" [(ngModel)]="updateSelectedEmployee" optionLabel="email"
                   [filter]="true" filterBy="email" [showClear]="true" placeholder="Select an Employee"
                   formControlName="assignedTo">
@@ -290,6 +314,10 @@
                     </div>
                   </ng-template>
                 </p-dropdown>
+                <div *ngIf="UpdateTaskForm.get('assignedTo')?.touched && UpdateTaskForm.get('assignedTo')?.invalid"
+                  class="error">
+                  <div *ngIf="UpdateTaskForm.get('assignedTo')?.errors?.['required']">*Please select an employee</div>
+                </div>
               </div>
             </div>
           </div>
@@ -316,7 +344,12 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="Updatetask(UpdateTaskForm)"></button>
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="Updatetask(UpdateTaskForm)"
+      [disabled]="UpdateTaskForm.invalid"></button>
     <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="updateBasic=false"></button>
   </ng-template>
 </p-dialog>
+
+
+
+

@@ -1,69 +1,89 @@
-<p-table #dt [value]="performanceData" [(selection)]="selectedEmployee" dataKey="id" styleClass="p-datatable-customers"
-  [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
-  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
-  [globalFilterFields]="['managerId','managerName','empName','month','year','completedTaskCount']">
-  <ng-template pTemplate="caption">
-    <div class="table-header d-flex justify-content-between align-items-center">
-      <h2 class="table-title">List of Employees</h2>
-      <span class="p-input-icon-right">
-        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
-        <i class="pi pi-search"></i>
-        <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Global Search" />
-      </span>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="header">
-    <tr>
-      <th pSortableColumn="managerId">manager Id<p-columnFilter type="text" field="managerId" display="menu"
-          class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="managerName">Manager Email<p-columnFilter type="text" field="managerName" display="menu"
-          class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="empName">Employee Email<p-columnFilter type="text" field="empName" display="menu"
-          class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="month">Month <p-columnFilter type="text" field="month" display="menu" class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="year">Year <p-columnFilter type="text" field="year" display="menu" class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="completedTaskCount">Completed Task Count <p-columnFilter type="text"
-          field="completedTaskCount" display="menu" class="test2">
-        </p-columnFilter>
-      </th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-employee>
-    <tr class="p-selectable-row">
-      <td>
-        {{employee.managerId}}
-      </td>
-      <td>
-        {{employee.managerName}}
-      </td>
-      <td>
-        {{employee.empName}}
-      </td>
-      <td>
-        {{employee.month}}
-      </td>
-      <td>
-        {{employee.year}}
-      </td>
-      <td>
-        {{employee.completedTaskCount}}
-      </td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
-    <tr>
-      <td colspan="8">No Employee found.</td>
-    </tr>
-  </ng-template>
-</p-table>
 
+<div class="container-fluid">
+    <div class="card-body p-0">
+      <div  style="max-height: 600px; overflow-y: auto;">
+        <p-table #dt [value]="EmployeeList" [(selection)]="selectedEmployee"
+                 styleClass="p-datatable-customers"
+                 [rows]="5" [showCurrentPageReport]="true"
+                 [rowsPerPageOptions]="[5,10,15,100]" [paginator]="true"
+                 (onRowSelect)="onRowSelect($event)"
+                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [filterDelay]="10"
+                 selectionMode="single"
+                 [globalFilterFields]="['firstName','lastName','email','phoneNumber','department','managerId']">
+          <ng-template pTemplate="caption">
+            <div class="table-header d-flex justify-content-between align-items-center">
+              <h2 class="table-title">Employee List</h2>
+              <span class="p-input-icon-right">
+                <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Global Search" />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th  pSortableColumn="firstName" style="min-width:10rem">FirstName
+                <p-columnFilter type="text" field="firstName" display="menu" class="test2"></p-columnFilter>
+              </th>
+              <th pSortableColumn="lastName" style="min-width:10rem">LastName
+                <p-columnFilter type="text" field="lastName" display="menu" class="test2"></p-columnFilter>
+              </th>
+              <th pSortableColumn="email" style="min-width:20rem">Email
+                <p-columnFilter type="text" field="email" display="menu" class="test2"></p-columnFilter>
+              </th>
+              <th pSortableColumn="phoneNumber" style="min-width:10rem">Contact
+                <p-columnFilter type="text" field="phoneNumber" display="menu" class="test2"></p-columnFilter>
+              </th>
+              <th pSortableColumn="department" style="min-width:10rem">Department
+                <p-columnFilter type="text" field="department" display="menu" class="test2"></p-columnFilter>
+              </th>
+              <th style="min-width:8rem">Role
+
+              </th>
+              <th pSortableColumn="managerId"  style="min-width:10rem">ManagerName
+                <p-columnFilter type="text" field="managerId" display="menu" class="test2"></p-columnFilter>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-employee>
+            <tr  [pSelectableRow]="employee">
+              <td>{{employee.firstName}}</td>
+              <td>{{employee.lastName}}</td>
+              <td>{{employee.email}}</td>
+              <td>{{employee.phoneNumber}}</td>
+              <td>{{employee.department}}</td>
+              <td>{{employee.role}}</td>
+              <td>{{employee.managerName}}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6">No Employee found.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+  </div>
+</div>
+
+<div class="container-fluid mt-5">
+  <div class="row">
+    <div class="text-center">
+      Performance Visualization
+    </div>
+    <div class="col-md-6">
+      <span>
+     <p-dropdown class="custom-dropdown"  (onChange)="onMonthChange($event)"  [options]="months" [(ngModel)]="selectedMonth" placeholder="Select Month" optionLabel="name" [showClear]="true"></p-dropdown>
+    </span>
+     <div class="chart-container">
+        <p-chart type="doughnut" [data]="doughnutChartData"  [options]="doughnutChartOptions"></p-chart>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-container">
+        <p-chart type="bar" [data]="barChartData" height="320" [options]="barChartOptions"></p-chart>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,16 +7,16 @@
     border-radius: 5px;
     background-color: #f9f9f9;
   }
-  
+
   .form-group {
     margin-bottom: 15px;
   }
-  
+
   label {
     display: block;
     font-weight: bold;
   }
-  
+
   input[type="email"],
   input[type="password"] {
     width: 100%;
@@ -25,7 +25,7 @@
     border: 1px solid #ccc;
     border-radius: 3px;
   }
-  
+
   button {
     width: 100%;
     padding: 10px;
@@ -36,7 +36,7 @@
     border-radius: 3px;
     cursor: pointer;
   }
-  
+
   button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
@@ -46,5 +46,7 @@
     font-size: 12px;
     margin-top: 5px;
   }
-  
-  
+  .forgot-password
+  {
+    font-size:small;
+  }

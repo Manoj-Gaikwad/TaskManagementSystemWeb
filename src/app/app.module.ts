@@ -44,6 +44,10 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import {CalendarModule} from 'primeng/calendar';
 import {SliderModule} from 'primeng/slider';
 import {PasswordModule} from 'primeng/password';
+import { ChartModule } from 'primeng/chart';
+import { PaginatorModule } from 'primeng/paginator';
+
+
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -92,13 +96,15 @@ export function tokenGetter() {
     CalendarModule,
     SliderModule,
     PasswordModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ['localhost:5001'],
-        disallowedRoutes: ['http://localhost:5001/api/auth']
-      }
-    })
+    ChartModule,
+    PaginatorModule,
+    // JwtModule.forRoot({
+    //   config: {
+    //     tokenGetter: tokenGetter,
+    //     allowedDomains: ['localhost:5001'],
+    //     disallowedRoutes: ['http://localhost:5001/api/auth']
+    //   }
+    // })
   ],
   providers: [
     AuthService,

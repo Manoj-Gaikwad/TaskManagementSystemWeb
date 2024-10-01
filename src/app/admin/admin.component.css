@@ -1,0 +1,71 @@
+:host {
+  display: block;
+  padding: 20px;
+}
+
+.chart-container {
+  width: 100%; /* Adjust width as needed */
+  height: 500px; /* Set desired height */
+  position: relative; /* Ensures the canvas adjusts within the container */
+}
+
+p-chart {
+  display: block;
+  width: 100%;
+  height: 100%; /* Ensures the chart takes the full height of the container */
+}
+
+p-chart canvas {
+  display: block;
+  width: 100%; /* Makes sure the canvas scales with the container width */
+  height: 328px !important; /* Forces the canvas to use 100% of the container height */
+}
+
+/* Custom styles for table container */
+.table-container {
+  max-height: 400px; /* Set a fixed height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  margin-bottom: 20px; /* Add margin to avoid overlap with paginator */
+}
+
+/* Optional: Style the scrollbar */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #343a40; /* Dark scrollbar to match the theme */
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background-color: #e9ecef;
+}
+
+.p-button-outlined{
+  margin-right: 10px; /* Adjust the space as needed */
+}
+.custom-dropdown {
+  width: 1000px!important;
+}
+
+.custom-dropdown .p-dropdown-label {
+  width: 100%!important;
+}
+
+/* :host ::ng-deep .p-dropdown-label {
+  width: 10rem
+} */
+:host ::ng-deep .custom-dropdown .p-dropdown {
+  width: 200px !important;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  height:40px
+}
+
+.text-center
+{
+  font-size:30px;
+  font-family: sans-serif;
+}
+

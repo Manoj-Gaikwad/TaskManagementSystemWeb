@@ -7,14 +7,18 @@ import { NotifyService } from 'src/Sevices/notify.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   registerData!: Register;
   response: any;
 
-  constructor(private fb: FormBuilder, private authservice: AuthService, private notifyService:NotifyService) {}
+  constructor(
+    private fb: FormBuilder,
+    private authservice: AuthService,
+    private notifyService: NotifyService
+  ) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -27,7 +31,7 @@ export class RegisterComponent implements OnInit {
       address: ['', Validators.required],
       department: ['', Validators.required],
       role: ['Employee', Validators.required],
-      managerId: ['0', Validators.required]
+      managerId: ['0', Validators.required],
     });
   }
 
@@ -38,13 +42,11 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.registerData = this.registerForm.value;
     this.registerData.dob = new Date(this.registerData.dob).toISOString();
-    this.authservice.register(this.registerData).subscribe((response:any) => {
-      if(response!=null||''){
+    this.authservice.register(this.registerData).subscribe((response: any) => {
+      if (response.result == 'User created successfully') {
         this.notifyService.showSuccess();
         this.registerForm.reset();
-      }
-      else
-      {
+      } else {
         this.notifyService.showError();
         this.registerForm.reset();
       }

@@ -54,21 +54,21 @@ export class TaskListComponent implements OnInit {
     this.CreateTaskForm = this.fb.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      assignedTo: ['', [Validators.required, Validators.email]], // or you might need a different setup if you want to handle objects
-      createdBy: ['', [Validators.required, Validators.email]],
-      creationDate: ['', Validators.required],
-      isCompleted: [false, [Validators.required]],
-      uploadedFile: ['No', [Validators.required]],
-      completionDate: ['0001-01-01T00:00:00.000Z', [Validators.required]],
-      managerId: ['', Validators.required],
+      assignedTo: ['', [Validators.required]], // or you might need a different setup if you want to handle objects
+      createdBy: [''],
+      creationDate: [''],
+      isCompleted: [false],
+      uploadedFile: ['No'],
+      completionDate: ['0001-01-01T00:00:00.000Z'],
+      managerId: [''],
     });
 
     this.UpdateTaskForm = this.fb.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      assignedTo: ['', [Validators.required, Validators.email]], // or you might need a different setup if you want to handle objects
-      createdBy: ['', [Validators.required, Validators.email]],
-      managerId: ['', Validators.required],
+      assignedTo: ['', [Validators.required]], // or you might need a different setup if you want to handle objects
+      createdBy: [''],
+      managerId: [''],
     });
 
     this.uploadDataForm = this.fb.group({
@@ -167,6 +167,7 @@ export class TaskListComponent implements OnInit {
       }
     });
   }
+
   submitForm(data: any) {
     const currentDate = new Date().toISOString();
     const assignedToEmail = data.value.assignedTo?.email || '';
@@ -200,15 +201,24 @@ export class TaskListComponent implements OnInit {
       }
     );
   }
+
   GetAssignTasks() {
     this.taskService.GetAssignTasks().subscribe(
       (data: any[]) => {
         this.Alltasks = data;
+        this.Alltasks = this.sortTasksDescending(this.Alltasks);
         this.loading = false; // Assuming data is an array of tasks
       },
       (error: any) => {
         console.error('Error fetching tasks:', error);
       }
+    );
+  }
+
+  sortTasksDescending(tasks: any[]): any[] {
+    return tasks.sort(
+      (a, b) =>
+        new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
     );
   }
 
@@ -220,6 +230,7 @@ export class TaskListComponent implements OnInit {
         createdBy: this.managerEmail,
         managerId: this.managerId,
       });
+
       this.allEmployeeData = data.employees
         .filter((email: string) => email !== this.managerEmail) // Exclude manager's email
         .map((email: string) => ({ email })); // Map to Employee interface
@@ -237,7 +248,6 @@ export class TaskListComponent implements OnInit {
       } else {
         this.notifyservice.showError();
       }
-
       if (response != null) {
         this.UpdateTaskForm.patchValue({
           title: response.title,
@@ -246,6 +256,7 @@ export class TaskListComponent implements OnInit {
           createdBy: response.createdBy,
           managerId: response.managerId,
         });
+        this.UpdateTaskForm.updateValueAndValidity();
         this.GetAssignTasks();
       } else {
         this.notifyservice.showError();
@@ -262,7 +273,6 @@ export class TaskListComponent implements OnInit {
       createdBy: this.managerEmail,
       managerId: this.managerId,
     });
-
     this.Task = this.UpdateTaskForm.value;
     this.Task.taskId = this.updateTaskId;
     this.taskService.updateTask(this.Task).subscribe((response: any) => {
@@ -275,5 +285,13 @@ export class TaskListComponent implements OnInit {
         this.notifyservice.showError();
       }
     });
+  }
+
+  get f() {
+    return this.CreateTaskForm.controls;
+  }
+
+  get j() {
+    return this.UpdateTaskForm.controls;
   }
 }

@@ -13,18 +13,22 @@
             <a class="nav-link" routerLink="/tasks">Tasks</a>
           </li>
           <li class="nav-item" *ngIf="hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Manager')">
-            <a class="nav-link" routerLink="/employees">Employee List</a>
+            <a class="nav-link" routerLink="/employees">Employees</a>
           </li>
           <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin')">
-            <a class="nav-link" routerLink="/admin">Employee Performance Data</a>
+            <a class="nav-link" routerLink="/admin">Performance</a>
           </li>
-          <li class="nav-item" *ngIf="hasRole(userRoles, 'Manager')">
-            <a class="nav-link" routerLink="/manager">Manager</a>
+          <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin')">
+            <a class="nav-link" routerLink="/manager">Managers</a>
           </li>
           <li class="nav-item">
             <!-- <p-splitButton label="Welcome {{this.userinfo.firstName}} " [model]="this.items"
               styleClass="p-button-rounded p-button-secondary mt-"></p-splitButton> -->
-              <p-splitButton label="Welcome {{this.userinfo.firstName}}" [model]="items" styleClass="p-button-raised p-button-secondary"></p-splitButton>
+              <p-splitButton    label="{{ this.userinfo?.firstName }} {{ this.userinfo?.lastName }}"
+              [model]="items"
+              icon="pi pi-user"
+              styleClass="p-button-raised p-button-secondary">
+            </p-splitButton>
 
           </li>
         </ng-container>
@@ -33,7 +37,7 @@
     <ng-template #loginLink>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/login">Login</a>
+          <a class="nav-link" routerLink="/login">Sign In</a>
         </li>
       </ul>
     </ng-template>
@@ -43,7 +47,7 @@
 
 <p-dialog [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
   <form [formGroup]="updateProfileForm" >
-    <h2 class="text-center">Update Profile Info</h2>
+    <h2 class="text-center"> Profile Information</h2>
     <div class="form-container">
       <div class="row">
         <div class="col-md-4">
@@ -136,7 +140,7 @@
         <div class="col-md-12">
           <div class="form-group">
             <label for="NewPassword">New Password</label><br>
-             <p-password [(ngModel)]="newPassword" [toggleMask]="true" style="width: 300px;"></p-password>
+             <p-password [(ngModel)]="newPassword" [toggleMask]="true"></p-password>
           </div>
         </div>
       </div>

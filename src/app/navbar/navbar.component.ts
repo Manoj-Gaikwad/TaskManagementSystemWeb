@@ -6,6 +6,9 @@ import { Register } from 'src/Models/register';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotifyService } from 'src/Sevices/notify.service';
 import { UpdatePasswordModel } from 'src/Models/UpdatePasswordModel';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 interface Role {
   name: string;
@@ -27,15 +30,16 @@ export class NavbarComponent implements OnInit {
   selectedCity!: Role;
   Roles!: Role[];
   updateProfileData: any;
-  displayUpdatePassword!:boolean;
+  displayUpdatePassword!: boolean;
   currentPassword!: string;
   newPassword!: string;
-  UpdatePassModel!:UpdatePasswordModel;
+  UpdatePassModel!: UpdatePasswordModel;
 
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private notifyService: NotifyService
+    private notifyService: NotifyService,
+    private router: Router, private location: Location
   ) {
     this.updateProfileForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -49,6 +53,16 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+   //brouser back button logic
+    this.router.events
+    .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+    .subscribe((event:any) => {
+      if (event.url === '/login') {
+        console.log('Navigated to login page.');
+        this.userinfo=null;
+      }
+    });
+
     this.authService.userInfo.subscribe((data: any) => {
       this.userinfo = data;
     });
@@ -60,58 +74,59 @@ export class NavbarComponent implements OnInit {
     this.items = [
       {
         label: 'Profile',
-        icon: 'pi pi-user',
+        icon: 'pi pi-user-edit',
         command: () => {
           this.Profile();
         },
       },
       {
-        label: 'logout',
-        icon: 'pi pi-times',
+        label: 'Sign Out',
+        icon: 'pi pi-sign-out',
         command: () => {
           this.logout();
         },
       },
       {
         label: 'Update Password',
-        icon: 'pi pi-wrench',
+        icon: 'pi pi-key',
         command: () => {
           this.UpdatePassword();
         },
       },
-      // {label: 'Angular.io', icon: 'pi pi-info', url: 'http://angular.io'},
-      // {separator:true},
-      // {label: 'Setup', icon: 'pi pi-cog', routerLink: ['/setup']}
     ];
   }
 
-  UpdatePassword(){
-    this.displayUpdatePassword=true;
-    this.currentPassword='';
-    this.newPassword='';
+  UpdatePassword() {
+    this.displayUpdatePassword = true;
+    this.currentPassword = '';
+    this.newPassword = '';
   }
 
-  modifyPassword(){
+  modifyPassword() {
     this.UpdatePassModel = new UpdatePasswordModel();
     this.UpdatePassModel = {
       CurrentPassword: this.currentPassword,
       NewPassword: this.newPassword,
-      Email: this.userinfo.email
-  };
-    if(this.UpdatePassModel.CurrentPassword !=null && this.UpdatePassModel.NewPassword!=null && this.UpdatePassModel.Email!=null){
-       this.authService.modifyPassword(this.UpdatePassModel).subscribe((response:any)=>{
-        if(response.message=='Password updated successfully')
-        {
-          this.currentPassword='';
-          this.newPassword='';
-          this.displayUpdatePassword=false;
-          this.notifyService.showSuccess();
-        }
-        else{
-          this.notifyService.showError();
-        }
-       })
-      }
+      Email: this.userinfo.email,
+    };
+    if (
+      this.UpdatePassModel.CurrentPassword != null &&
+      this.UpdatePassModel.NewPassword != null &&
+      this.UpdatePassModel.Email != null
+    ) {
+      this.authService
+        .modifyPassword(this.UpdatePassModel)
+        .subscribe((response: any) => {
+          if (response.message == 'Password updated successfully') {
+            this.currentPassword = '';
+            this.newPassword = '';
+            this.displayUpdatePassword = false;
+            this.notifyService.showSuccess();
+          } else {
+            this.notifyService.showError();
+          }
+        });
+    }
   }
   logout(): void {
     this.authService.logout();
@@ -119,6 +134,7 @@ export class NavbarComponent implements OnInit {
   }
 
   onSubmit(data: any) {
+    debugger
     this.updateProfileData = data.value;
     this.updateProfileData.dob = new Date(data.value.dob).toISOString();
     this.authService
@@ -170,5 +186,4 @@ export class NavbarComponent implements OnInit {
   get f() {
     return this.updateProfileForm.controls;
   }
-
 }

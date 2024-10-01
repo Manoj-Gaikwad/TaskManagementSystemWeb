@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-6">
           <div class="form-group">
             <label for="email">Email</label>
             <input id="email" type="email" formControlName="email" class="form-control" />
@@ -41,33 +41,28 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="form-group">
             <label for="password">Password</label>
             <input id="password" type="password" formControlName="password" class="form-control" />
+
             <div *ngIf="f['password'].touched && f['password'].invalid" class="error">
-              *Password is required and should be at least 6 characters
+              <div *ngIf="f['password'].errors?.['required']">
+                *Password is required
+              </div>
+              <div *ngIf="f['password'].errors?.['minlength']">
+                *Password should be at least 6 characters
+              </div>
+              <div *ngIf="f['password'].errors?.['pattern']">
+                *Password must contain at least one uppercase and one lowercase letter, one number, and one special character ,
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <label for="role">Role</label><br>
-            <p-dropdown [options]="Roles" [(ngModel)]="selectedCity" placeholder="Select Role" optionLabel="name"
-              [showClear]="true" formControlName="role"></p-dropdown>
-            <div *ngIf="f['role'].touched && f['role'].invalid" class="error">
-              *Role is required
-            </div>
-            <!-- <select id="role" formControlName="role" class="form-control">
-              <option>Employee</option>
-              <option>Manager</option>
-              <option>Admin</option>
-            </select> -->
-          </div>
-        </div>
+
       </div>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
             <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
@@ -76,7 +71,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label for="department">Department</label>
             <input id="department" type="text" formControlName="department" class="form-control" />
@@ -85,7 +80,17 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="role">Role</label><br>
+            <p-dropdown [options]="Roles" [(ngModel)]="selectedRole" placeholder="Select Role" optionLabel="name"
+              [showClear]="true" formControlName="role"></p-dropdown>
+            <div *ngIf="f['role'].touched && f['role'].invalid" class="error">
+              *Role is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
           <div class="form-group">
             <label for="managerId">Manager ID</label>
             <input id="managerId" type="text" formControlName="managerId" class="form-control" readonly />
@@ -109,7 +114,7 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="onSubmit()"></button>
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="onSubmit()" [disabled]="registerForm.invalid"></button>
     <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayBasic=false"></button>
   </ng-template>
 </p-dialog>
@@ -127,7 +132,7 @@
       </div>
       <h2 class="table-title">List of Employees</h2>
       <span class="p-input-icon-right">
-        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+        <button pButton label="Clear" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
         <i class="pi pi-search"></i>
         <input pInputText type="text" (input)="onGlobalFilter($event)" placeholder="Global Search" />
       </span>
@@ -176,7 +181,7 @@
         {{employee.phoneNumber}}
       </td>
       <td>
-        {{employee.dob}}
+        {{employee.dob|date:'dd/MM/yy'}}
       </td>
       <td>
         {{employee.address}}
@@ -185,8 +190,9 @@
         {{employee.role}}
       </td>
       <td style="text-align: center">
-        <button pButton pRipple type="button" label="Update" icon="pi pi-wrench" class="p-button-secondary"
-          (click)="showUpdateDialog(employee.email)"></button>
+        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-secondary"
+          (click)="showUpdateDialog(employee.email)"></button>&nbsp;
+          <p-button (click)="showconformDeleteDialog(employee.email)" icon="pi pi-times" styleClass="p-button-secondary"></p-button>
       </td>
     </tr>
   </ng-template>
@@ -207,7 +213,7 @@
           <div class="form-group">
             <label for="firstName">First Name</label>
             <input id="firstName" type="text" formControlName="firstName" class="form-control" />
-            <div *ngIf="f['firstName'].touched && f['firstName'].invalid" class="error">
+            <div *ngIf="j['firstName'].touched && j['firstName'].invalid" class="error">
               *First Name is required
             </div>
           </div>
@@ -216,7 +222,7 @@
           <div class="form-group">
             <label for="lastName">Last Name</label>
             <input id="lastName" type="text" formControlName="lastName" class="form-control" />
-            <div *ngIf="f['lastName'].touched && f['lastName'].invalid" class="error">
+            <div *ngIf="j['lastName'].touched && j['lastName'].invalid" class="error">
               *Last Name is required
             </div>
           </div>
@@ -225,7 +231,7 @@
           <div class="form-group">
             <label for="dob">Date of Birth</label>
             <input id="dob" type="date" formControlName="dob" class="form-control" />
-            <div *ngIf="f['dob'].touched && f['dob'].invalid" class="error">
+            <div *ngIf="j['dob'].touched && j['dob'].invalid" class="error">
               *Date Of Birth is required
             </div>
           </div>
@@ -236,7 +242,7 @@
           <div class="form-group">
             <label for="email">Email</label>
             <input id="email" type="email" formControlName="email" class="form-control" readonly />
-            <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
+            <div *ngIf="j['email'].touched && j['email'].invalid" class="error">
               *Valid Email is required
             </div>
           </div>
@@ -245,7 +251,7 @@
           <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
             <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
-            <div *ngIf="f['phoneNumber'].touched && f['phoneNumber'].invalid" class="error">
+            <div *ngIf="j['phoneNumber'].touched && j['phoneNumber'].invalid" class="error">
               *PhoneNumber is required
             </div>
           </div>
@@ -254,7 +260,7 @@
           <div class="form-group">
             <label for="department">Department</label>
             <input id="department" type="text" formControlName="department" class="form-control" />
-            <div *ngIf="f['department'].touched && f['department'].invalid" class="error">
+            <div *ngIf="j['department'].touched && j['department'].invalid" class="error">
               *Department is required
             </div>
           </div>
@@ -265,7 +271,7 @@
           <div class="form-group">
             <label for="address">Address</label>
             <input id="address" formControlName="address" class="form-control">
-            <div *ngIf="f['address'].touched && f['address'].invalid" class="error">
+            <div *ngIf="j['address'].touched && j['address'].invalid" class="error">
               *Address is required
             </div>
           </div>
@@ -274,7 +280,17 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="updateFormSumbit(updateUserInfoForm)"></button>
+    <button pButton pRipple label="Submit" icon="pi pi-check" (click)="updateFormSumbit(updateUserInfoForm)" [disabled]="updateUserInfoForm.invalid"></button>
     <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="updatedialog=false"></button>
+  </ng-template>
+</p-dialog>
+
+
+<!-- Remove Employee dialog Box-->
+
+<p-dialog header="Delete Record" [(visible)]="conformDelete" [style]="{width: '40vw'}">
+  <p>Are you realy want to delete this Record ?</p>
+  <ng-template pTemplate="footer">
+      <p-button icon="pi pi-check" (click)="deleteRecord()" label="Ok" styleClass="p-button-text"></p-button>
   </ng-template>
 </p-dialog>

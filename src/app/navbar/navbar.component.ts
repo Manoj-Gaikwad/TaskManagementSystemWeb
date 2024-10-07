@@ -9,7 +9,7 @@ import { UpdatePasswordModel } from 'src/Models/UpdatePasswordModel';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Location } from '@angular/common';
-
+import { rootNavigationRoutes } from '../common/rootNavigationRoutes';
 interface Role {
   name: string;
 }
@@ -20,6 +20,7 @@ interface Role {
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
+  rootNavigationRoutes = rootNavigationRoutes;
   isAuthenticated$!: Observable<boolean>;
   userRoles$!: Observable<string>;
   items!: any;
@@ -53,15 +54,16 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   //brouser back button logic
+    //brouser back button logic
     this.router.events
-    .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-    .subscribe((event:any) => {
-      if (event.url === '/login') {
-        console.log('Navigated to login page.');
-        this.userinfo=null;
-      }
-    });
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        if (event.url === '/login') {
+          console.log('Navigated to login page.');
+          this.authService.userInfo.next(null);
+          this.authService.isAuthenticatedSubject.next(false);
+        }
+      });
 
     this.authService.userInfo.subscribe((data: any) => {
       this.userinfo = data;

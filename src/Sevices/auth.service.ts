@@ -10,6 +10,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { login } from '../Models/login';
 import { Register } from 'src/Models/register';
+import { rootNavigationRoutes } from 'src/app/common/rootNavigationRoutes';
 
 @Injectable({
   providedIn: 'root',
@@ -17,20 +18,20 @@ import { Register } from 'src/Models/register';
 export class AuthService {
   private apiUrl = 'https://localhost:44306/api/Auth';
   private jwtHelper = new JwtHelperService();
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(
+  public isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.isTokenValid()
   );
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
   public UserRole = new BehaviorSubject<string>('');
   public userInfo = new BehaviorSubject<any>(this.getUser());
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   register(register: Register) {
     return this.http.post(this.apiUrl + '/register', register);
   }
 
- 
+
 
   login(loginData: login): Observable<any> {
     return this.http.post(this.apiUrl + '/login', loginData).pipe(
@@ -50,12 +51,12 @@ export class AuthService {
           );
           this.isAuthenticatedSubject.next(true);
           this.userInfo.next(response);
-          if(response.roles =="Employee" || response.roles=="Manager")
-          {
-            this.router.navigate(['/task']);
+          debugger
+          if (response.roles == "Employee" || response.roles == "Manager") {
+            this.router.navigate([rootNavigationRoutes.tasks]);
           }
-          else{
-            this.router.navigate(['/admin']);
+          else {
+            this.router.navigate([rootNavigationRoutes.admin]);
           }
 
         }
@@ -71,7 +72,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    this.router.navigate(['/login']);
+    this.router.navigate([rootNavigationRoutes.login]);
   }
 
   clearSession(): void {
@@ -115,7 +116,7 @@ export class AuthService {
     });
   }
 
-  modifyPassword(data:any){
+  modifyPassword(data: any) {
     return this.http.post(`${this.apiUrl}/UpdatePassword`, data);
   }
 }

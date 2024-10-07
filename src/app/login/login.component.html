@@ -10,7 +10,7 @@
     </div>
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" formControlName="password" id="password" placeholder="Enter password" required>
+      <input type="text" formControlName="password" id="password" placeholder="Enter password" required>
       <div *ngIf="f['password'].touched && f['password'].invalid" class="error">
         *Password  Required
       </div>

@@ -8,26 +8,23 @@
     <ng-container *ngIf="isAuthenticated$ | async as isAuthenticated; else loginLink">
       <ul class="navbar-nav ml-auto">
         <ng-container *ngIf="userRoles$ | async as userRoles">
-          <li class="nav-item"
-            *ngIf="hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Employee')">
-            <a class="nav-link" routerLink="/tasks">Tasks</a>
+          <li class="nav-item" *ngIf="hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Employee')">
+            <a class="nav-link" [routerLink]="rootNavigationRoutes.tasks">Tasks</a>
           </li>
           <li class="nav-item" *ngIf="hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Manager')">
-            <a class="nav-link" routerLink="/employees">Employees</a>
+            <a class="nav-link" [routerLink]="rootNavigationRoutes.employees">Employees</a>
           </li>
           <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin')">
-            <a class="nav-link" routerLink="/admin">Performance</a>
+            <a class="nav-link" [routerLink]="rootNavigationRoutes.admin">Performance</a>
           </li>
           <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin')">
-            <a class="nav-link" routerLink="/manager">Managers</a>
+            <a class="nav-link" [routerLink]="rootNavigationRoutes.manager">Managers</a>
           </li>
           <li class="nav-item">
             <!-- <p-splitButton label="Welcome {{this.userinfo.firstName}} " [model]="this.items"
               styleClass="p-button-rounded p-button-secondary mt-"></p-splitButton> -->
-              <p-splitButton    label="{{ this.userinfo?.firstName }} {{ this.userinfo?.lastName }}"
-              [model]="items"
-              icon="pi pi-user"
-              styleClass="p-button-raised p-button-secondary">
+            <p-splitButton label="{{ this.userinfo?.firstName }} {{ this.userinfo?.lastName }}" [model]="items"
+              icon="pi pi-user" styleClass="p-button-raised p-button-secondary">
             </p-splitButton>
 
           </li>
@@ -46,7 +43,7 @@
 
 
 <p-dialog [(visible)]="displayBasic" [style]="{width: '60vw'}" [baseZIndex]="10000">
-  <form [formGroup]="updateProfileForm" >
+  <form [formGroup]="updateProfileForm">
     <h2 class="text-center"> Profile Information</h2>
     <div class="form-container">
       <div class="row">
@@ -82,7 +79,7 @@
         <div class="col-md-5">
           <div class="form-group">
             <label for="email">Email</label>
-            <input id="email" type="email" formControlName="email" class="form-control" readonly/>
+            <input id="email" type="email" formControlName="email" class="form-control" readonly />
             <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
               *Valid Email is required
             </div>
@@ -128,23 +125,23 @@
 
 <!--Update Password-->
 <p-dialog [(visible)]="displayUpdatePassword" [style]="{width: '30vw',height:'32vw'}" [baseZIndex]="10000">
-    <h2 class="text-center">Update Password</h2>
-    <div class="form-container">
-      <div class="row">
-        <div class="col-md-12 mb-4">
-          <div class="form-group">
-            <label for="CurrentPassword">Current Password</label><br>
-            <p-password [(ngModel)]="currentPassword" [toggleMask]="true"></p-password>
-          </div>
+  <h2 class="text-center">Update Password</h2>
+  <div class="form-container">
+    <div class="row">
+      <div class="col-md-12 mb-4">
+        <div class="form-group">
+          <label for="CurrentPassword">Current Password</label><br>
+          <p-password [(ngModel)]="currentPassword" [toggleMask]="true"></p-password>
         </div>
-        <div class="col-md-12">
-          <div class="form-group">
-            <label for="NewPassword">New Password</label><br>
-             <p-password [(ngModel)]="newPassword" [toggleMask]="true"></p-password>
-          </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="NewPassword">New Password</label><br>
+          <p-password [(ngModel)]="newPassword" [toggleMask]="true"></p-password>
         </div>
       </div>
     </div>
+  </div>
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Submit" icon="pi pi-check" (click)="modifyPassword()"></button>
     <button pButton pRipple label="Cancel" icon="pi pi-times" (click)="displayUpdatePassword=false"></button>

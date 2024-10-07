@@ -3,13 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { JwtModule } from '@auth0/angular-jwt';
-import { TableModule } from 'primeng/table';
+
 import { AppRoutingModule } from './app-routing.module';
-import { MessageService } from 'primeng/api'; // Import PrimeNG MessageService
+import { MessageService } from 'primeng/api';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -24,29 +21,9 @@ import { RegisterComponent } from './register/register.component';
 import { AuthService } from '../Sevices/auth.service';
 import { TaskService } from '../Sevices/task.service';
 import { NotifyService } from 'src/Sevices/notify.service';
-import { MessagesModule } from 'primeng/messages';
-import { MessageModule } from 'primeng/message';
+import { SharedModule } from './common/shared.module';
 
-import {ButtonModule} from 'primeng/button';
-import {RippleModule} from 'primeng/ripple';
-import { ToastModule } from 'primeng/toast';
-import {AvatarModule} from 'primeng/avatar';
-import {SplitButtonModule} from 'primeng/splitbutton';
-import { ChipModule } from 'primeng/chip';
-import { DialogModule } from 'primeng/dialog';
-import {DropdownModule} from 'primeng/dropdown';
-import {FileUploadModule} from 'primeng/fileupload';
-import {RadioButtonModule} from 'primeng/radiobutton';
-import {MultiSelectModule} from 'primeng/multiselect';
-import {ContextMenuModule} from 'primeng/contextmenu';
-import {InputTextModule} from 'primeng/inputtext';
-import {ProgressBarModule} from 'primeng/progressbar';
-import {CalendarModule} from 'primeng/calendar';
-import {SliderModule} from 'primeng/slider';
-import {PasswordModule} from 'primeng/password';
-import { ChartModule } from 'primeng/chart';
-import { PaginatorModule } from 'primeng/paginator';
-
+// Import SharedModule
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -56,48 +33,23 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     LoginComponent,
-    TaskListComponent,
+    // TaskListComponent,
     NavbarComponent,
     EmployeeListComponent,
     AdminComponent,
-    ManagerComponent,
+    // ManagerComponent,
     HomeComponent,
     RegisterComponent,
     // Other components
   ],
   imports: [
-    TableModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
+    SharedModule, // Include SharedModule here
     AppRoutingModule,
-    MessagesModule,
-    MessageModule,
-    ButtonModule,
-    ToastModule,
-    RippleModule,
-    AvatarModule,
-    SplitButtonModule,
-    ChipModule,
-    DialogModule,
-    DropdownModule,
-    FileUploadModule,
-    HttpClientModule,
-    RadioButtonModule,
-    MultiSelectModule,
-    ContextMenuModule,
-    InputTextModule,
-    ProgressBarModule,
-    CalendarModule,
-    SliderModule,
-    PasswordModule,
-    ChartModule,
-    PaginatorModule,
     // JwtModule.forRoot({
     //   config: {
     //     tokenGetter: tokenGetter,

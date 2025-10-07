@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { rootNavigationRoutes } from './common/rootNavigationRoutes';
+import { SharedModule } from './common/shared.module';
 
 
 const routes: Routes = [
@@ -26,12 +27,14 @@ const routes: Routes = [
   },
   { path: rootNavigationRoutes.login, component: LoginComponent },
   { path: rootNavigationRoutes.register, component: RegisterComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', redirectTo: '/tasks', pathMatch: 'full' }
+  { path: '', redirectTo: '/admin', pathMatch: 'full' },
+  { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    SharedModule,
+    RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

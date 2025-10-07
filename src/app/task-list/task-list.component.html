@@ -89,7 +89,7 @@
 </p-dialog>
 
 <p-table #dt [value]="Alltasks" [(selection)]="selectedEmployee" dataKey="id" styleClass="p-datatable-customers"
-  [rowHover]="true" [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]" [paginator]="true"
+   [scrollable]="true" scrollWidth="100%" [rowHover]="true" [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
   [globalFilterFields]="['title','description','assignedTo','createdBy','creationDate','complitionDate','isCompleted','managerId','taskId','uplodedfile']">
   <ng-template pTemplate="caption">
@@ -217,7 +217,7 @@
       </td>
       <td>
         <div class="button-container" *ngIf="employee.uplodedfile!='Yes' && Role=='Manager'">
-          <button pButton pRipple type="button" icon="pi pi-wrench" class="p-button-warning"
+          <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-primary"
             (click)="getTaskDetails(employee.taskId)"></button>
         </div>
       </td>

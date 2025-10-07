@@ -148,7 +148,6 @@ export class AdminComponent implements OnInit {
       this.totalCount = data.totalCount;
       this.updateDoughnutChart();
   });
-    console.log('Selected month:', this.selectedMonth);
 }
   updateDoughnutChart() {
     this.doughnutChartData = {

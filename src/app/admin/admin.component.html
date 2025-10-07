@@ -2,9 +2,13 @@
 <div class="container-fluid">
     <div class="card-body p-0">
       <div  style="max-height: 600px; overflow-y: auto;">
-        <p-table #dt [value]="EmployeeList" [(selection)]="selectedEmployee"
-                 styleClass="p-datatable-customers"
+        <p-table #dt [value]="EmployeeList"
+                 scrollHeight="400px"
+                 [style]="{'min-height':'400px'}"
+                 [(selection)]="selectedEmployee"
+                 styleClass="p-datatable-gridlines"
                  [rows]="5" [showCurrentPageReport]="true"
+                  [scrollable]="true" scrollWidth="100%" 
                  [rowsPerPageOptions]="[5,10,15,100]" [paginator]="true"
                  (onRowSelect)="onRowSelect($event)"
                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -13,7 +17,7 @@
                  [globalFilterFields]="['firstName','lastName','email','phoneNumber','department','managerId']">
           <ng-template pTemplate="caption">
             <div class="table-header d-flex justify-content-between align-items-center">
-              <h2 class="table-title">Employee List</h2>
+              <h3 class="table-title">Employee List</h3>
               <span class="p-input-icon-right">
                 <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
                 <i class="pi pi-search"></i>
@@ -41,7 +45,7 @@
               <th style="min-width:8rem">Role
 
               </th>
-              <th pSortableColumn="managerId"  style="min-width:10rem">ManagerName
+              <th pSortableColumn="managerId"  style="min-width:15rem">ManagerName
                 <p-columnFilter type="text" field="managerId" display="menu" class="test2"></p-columnFilter>
               </th>
             </tr>

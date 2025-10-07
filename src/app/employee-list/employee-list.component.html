@@ -120,8 +120,8 @@
 </p-dialog>
 
 <p-table #dt [value]="getManagerWiseEmpList" [(selection)]="selectedEmployee" dataKey="id"
-  styleClass="p-datatable-customers" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
-  [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
+  styleClass="p-datatable-gridlines"  [scrollable]="true" scrollWidth="100%" [rowHover]="true" [rows]="5" [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[5,10,15]" [loading]="loading" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
   [globalFilterFields]="['firstName','LastName','email','contact','dob','address','role']">
   <ng-template pTemplate="caption">
@@ -130,7 +130,7 @@
         <button pButton pRipple type="button" label="New Employee" icon="pi pi-plus" class="p-button-secondary"
           (click)="showBasicDialog()"></button>
       </div>
-      <h2 class="table-title">List of Employees</h2>
+      <h3 class="table-title">List of Employees</h3>
       <span class="p-input-icon-right">
         <button pButton label="Clear" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
         <i class="pi pi-search"></i>
@@ -190,9 +190,9 @@
         {{employee.role}}
       </td>
       <td style="text-align: center">
-        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-secondary"
+        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-primary"
           (click)="showUpdateDialog(employee.email)"></button>&nbsp;
-          <p-button (click)="showconformDeleteDialog(employee.email)" icon="pi pi-times" styleClass="p-button-secondary"></p-button>
+          <p-button (click)="showconformDeleteDialog(employee.email)" icon="pi pi-trash" styleClass="p-button-danger"></p-button>
       </td>
     </tr>
   </ng-template>

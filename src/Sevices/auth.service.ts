@@ -97,6 +97,7 @@ export class AuthService {
     const user = this.getUser();
     return user.roles || '';
   }
+  
 
   private isTokenValid(): boolean {
     const token = this.getToken();

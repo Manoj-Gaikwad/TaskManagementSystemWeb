@@ -10,14 +10,12 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
+      require('karma-html-reporter'),              // <-- added
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
       jasmine: {
         // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution with `random: false`
-        // or set a specific seed with `seed: 4321`
       },
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
@@ -32,7 +30,15 @@ module.exports = function (config) {
         { type: 'text-summary' }
       ]
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'kjhtml', 'html'],    // <-- added 'html'
+    htmlReporter: {                               // <-- added configuration
+      outputFile: 'tests/test-runner.html',      // file path for generated HTML
+      pageTitle: 'Unit Tests',
+      subPageTitle: 'Angular Test Report',
+      groupSuites: true,
+      useCompactStyle: true,
+      useLegacyStyle: true
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

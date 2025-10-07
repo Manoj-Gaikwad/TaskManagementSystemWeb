@@ -23,7 +23,7 @@ import { ChartModule } from 'primeng/chart';
 import { PaginatorModule } from 'primeng/paginator';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
-
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
@@ -49,6 +49,7 @@ import { MessageModule } from 'primeng/message';
     PaginatorModule,
     MessagesModule,
     MessageModule,
+    ReactiveFormsModule
   ],
   exports: [
     // Export all PrimeNG modules for use in other modules
@@ -73,7 +74,9 @@ import { MessageModule } from 'primeng/message';
     PaginatorModule,
     MessagesModule,
     MessageModule,
-    DatePipe
+    DatePipe,
+    CommonModule,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule {}

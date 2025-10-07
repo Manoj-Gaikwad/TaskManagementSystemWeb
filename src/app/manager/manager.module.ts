@@ -7,6 +7,7 @@ import { DropdownModule } from "primeng/dropdown";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DialogModule } from "primeng/dialog";
 import { ButtonModule } from "primeng/button";
+import { CommonModule } from "@angular/common";
 
 const route: Routes = [
     { path: '', component: ManagerComponent }
@@ -14,6 +15,7 @@ const route: Routes = [
 @NgModule({
     declarations: [ManagerComponent],
     imports: [
+        CommonModule,
         SharedModule,
         TableModule,
         DropdownModule,

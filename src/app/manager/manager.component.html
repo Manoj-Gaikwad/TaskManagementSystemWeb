@@ -115,7 +115,8 @@
   </p-dialog>
 
 <p-table #dt [value]="allManagerList" dataKey="id"
-  styleClass="p-datatable-customers" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+  styleClass="p-datatable-gridlines" scrollHeight="400px"
+                 [style]="{'min-height':'400px'}"  [scrollable]="true" scrollWidth="100%"  [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
   [rowsPerPageOptions]="[10,25,50]" [loading]="loading" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
   [globalFilterFields]="['firstName','LastName','email','contact','dob','address','role']">
@@ -125,7 +126,7 @@
         <button pButton pRipple type="button" label="Add New User" icon="pi pi-plus" class="p-button-secondary"
           (click)="showBasicDialog()"></button>
       </div>
-      <h2 class="table-title">List of Managers</h2>
+      <h3 class="table-title">List of Managers</h3>
       <span class="p-input-icon-right">
         <button pButton label="Clear" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
         <i class="pi pi-search"></i>
@@ -179,7 +180,7 @@
       <td style="text-align: center">
         <button pButton pRipple type="button"  icon="pi pi-pencil" class="p-button-secondary"
           (click)="showUpdateDialog(user.email)"></button> &nbsp;
-          <p-button (click)="showconformDeleteDialog(user.email)" icon="pi pi-times" styleClass="p-button-secondary"></p-button>
+          <p-button (click)="showconformDeleteDialog(user.email)" icon="pi pi-trash" styleClass="p-button-danger"></p-button>
       </td>
     </tr>
   </ng-template>

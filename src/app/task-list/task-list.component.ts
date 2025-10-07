@@ -51,6 +51,7 @@ export class TaskListComponent implements OnInit {
     private notifyservice: NotifyService,
     private authService: AuthService
   ) {
+     this.Role = "Manager";
     this.CreateTaskForm = this.fb.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
@@ -79,13 +80,13 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+ngOnInit(): void {
+  debugger
+    const user = this.authService.getUser();
+   
     this.GetAssignTasks();
     this.GetAllManagedEmployees();
-    this.authService.userInfo.subscribe((data: any) => {
-      this.Role = data.roles;
-    });
-  }
+}
 
   isFileUploaded(): boolean {
     return this.Alltasks?.some((task) => task.uploadedFile !== 'Yes');

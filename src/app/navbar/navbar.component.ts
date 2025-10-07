@@ -59,7 +59,6 @@ export class NavbarComponent implements OnInit {
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         if (event.url === '/login') {
-          console.log('Navigated to login page.');
           this.authService.userInfo.next(null);
           this.authService.isAuthenticatedSubject.next(false);
         }

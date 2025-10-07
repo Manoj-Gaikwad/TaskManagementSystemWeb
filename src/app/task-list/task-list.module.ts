@@ -4,7 +4,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { SharedModule } from "../common/shared.module";
 import { ReactiveFormsModule } from "@angular/forms";
 import { TableModule } from "primeng/table";
-
 const route: Routes = [
     { path: '', component: TaskListComponent }
 ]

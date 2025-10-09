@@ -37,15 +37,15 @@ export class LoginComponent implements OnInit {
         this.responseData = data;
         this.authservice.UserRole.next(this.responseData?.roles);
         if (this.responseData && this.responseData.token) {
-          this.notifyservice.showSuccess();
+          this.notifyservice.showSuccess("Successfully Login!");
         } else {
-          this.notifyservice.showError();
+          this.notifyservice.showError("Error in Login!");
         }
       }, error => {
-        this.notifyservice.showError();
+        this.notifyservice.showError("Error in Login!");
       });
     } else {
-      this.notifyservice.showError();
+      this.notifyservice.showError("Error in Login!");
     }
   }
 }

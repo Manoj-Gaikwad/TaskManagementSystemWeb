@@ -108,12 +108,12 @@ export class ManagerComponent implements OnInit {
     this.authservice.register(this.managerData).subscribe((response: any) => {
       debugger;
       if (response.result == 'User created successfully') {
-        this.notifyService.showSuccess();
+        this.notifyService.showSuccess("User created successfully");
         this.managerForm.reset();
         this.GetAllManagerList();
         this.displayBasic = false;
       } else {
-        this.notifyService.showError();
+        this.notifyService.showError("User Not Created");
         this.managerForm.reset();
       }
     });
@@ -147,7 +147,7 @@ export class ManagerComponent implements OnInit {
             phoneNumber: this.updateUserInfo.phoneNumber,
           });
         } else {
-          this.notifyService.showError();
+          this.notifyService.showError("Error In Opning Update Dialog");
         }
       });
   }
@@ -161,10 +161,10 @@ export class ManagerComponent implements OnInit {
         const response = data;
         if (data != 'null') {
           this.updatedialog = false;
-          this.notifyService.showSuccess();
+          this.notifyService.showSuccess("User Updated Successfully");
           this.GetAllManagerList();
         } else {
-          this.notifyService.showError();
+          this.notifyService.showError("Erron In Update Details");
         }
       });
   }
@@ -183,9 +183,9 @@ export class ManagerComponent implements OnInit {
         debugger;
         if (data != null) {
           this.GetAllManagerList();
-          this.notifyService.showSuccess();
+          this.notifyService.showSuccess("Record Deleted Successfully");
         } else {
-          this.notifyService.showError();
+          this.notifyService.showError("Error in Deleting Record");
         }
       });
   }

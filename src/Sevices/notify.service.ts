@@ -1,28 +1,54 @@
 import { Injectable } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { PrimeNGConfig } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotifyService {
-  constructor(private messageService: MessageService, private primengConfig: PrimeNGConfig) {
+  constructor(
+    private messageService: MessageService,
+    private primengConfig: PrimeNGConfig
+  ) {
     this.primengConfig.ripple = true;
   }
 
-  showSuccess() {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success' });
+  showSuccess(detail: string, summary: string = 'Success') {
+    this.messageService.add({
+      severity: 'success',
+      summary: summary,
+      detail: detail,
+       life: 2000
+    });
   }
 
-  showInfo() {
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Info' });
+  showInfo(detail: string, summary: string = 'Information') {
+    this.messageService.add({
+      severity: 'info',
+      summary: summary,
+      detail: detail,
+       life: 2000
+    });
   }
 
-  showWarn() {
-    this.messageService.add({ severity: 'warn', summary: 'Warn', detail: 'Warning' });
+  showWarn(detail: string, summary: string = 'Warning') {
+    this.messageService.add({
+      severity: 'warn',
+      summary: summary,
+      detail: detail,
+       life: 2000
+    });
   }
 
-  showError() {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error' });
+  showError(detail: string, summary: string = 'Error') {
+    this.messageService.add({
+      severity: 'error',
+      summary: summary,
+      detail: detail,
+       life: 2000
+    });
+  }
+
+  clear() {
+    this.messageService.clear();
   }
 }

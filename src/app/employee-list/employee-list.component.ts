@@ -90,12 +90,12 @@ export class EmployeeListComponent implements OnInit {
     this.registerData.dob = new Date(this.registerData.dob).toISOString();
     this.authservice.register(this.registerData).subscribe((response: any) => {
       if (response.result == 'User created successfully') {
-        this.notifyService.showSuccess();
+        this.notifyService.showSuccess('Employee added successfully!');
         this.registerForm.reset();
         this.GetManagerWiseEmployee();
         this.displayBasic = false;
       } else {
-        this.notifyService.showError();
+        this.notifyService.showError('Failed to load employee data!');
         this.registerForm.reset();
       }
     });
@@ -204,7 +204,7 @@ export class EmployeeListComponent implements OnInit {
             phoneNumber: this.updateProfile.phoneNumber,
           });
         } else {
-          this.notifyService.showError();
+          this.notifyService.showError("Error");
         }
       });
   }
@@ -218,10 +218,10 @@ export class EmployeeListComponent implements OnInit {
         const response = data;
         if (data != 'null') {
           this.updatedialog = false;
-          this.notifyService.showSuccess();
+          this.notifyService.showSuccess("Employee Updated Successfully!");
           this.GetManagerWiseEmployee();
         } else {
-          this.notifyService.showError();
+          this.notifyService.showError("Employee Not Updated!");
         }
       });
   }
@@ -240,11 +240,11 @@ export class EmployeeListComponent implements OnInit {
       if(data!=null)
       {
          this.GetManagerWiseEmployee();
-        this.notifyService.showSuccess();
+        this.notifyService.showSuccess("Record Deleted Successfully!");
 
       }
       else{
-        this.notifyService.showError();
+        this.notifyService.showError("Error in Deleting Record!");
       }
     })
   }

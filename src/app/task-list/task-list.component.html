@@ -89,7 +89,7 @@
 </p-dialog>
 
 <p-table #dt [value]="Alltasks" [(selection)]="selectedEmployee" dataKey="id" styleClass="p-datatable-customers"
-   [scrollable]="true" scrollWidth="100%" [rowHover]="true" [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]" [paginator]="true"
+   styleClass="p-datatable-gridlines" [scrollable]="true" scrollWidth="100%" [rowHover]="true" [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
   [globalFilterFields]="['title','description','assignedTo','createdBy','creationDate','complitionDate','isCompleted','managerId','taskId','uplodedfile']">
   <ng-template pTemplate="caption">

@@ -44,10 +44,10 @@ export class RegisterComponent implements OnInit {
     this.registerData.dob = new Date(this.registerData.dob).toISOString();
     this.authservice.register(this.registerData).subscribe((response: any) => {
       if (response.result == 'User created successfully') {
-        this.notifyService.showSuccess();
+        this.notifyService.showSuccess("User Created Successfully!");
         this.registerForm.reset();
       } else {
-        this.notifyService.showError();
+        this.notifyService.showError("Error in User Creationg!");
         this.registerForm.reset();
       }
     });

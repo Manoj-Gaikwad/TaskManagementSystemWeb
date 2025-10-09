@@ -122,9 +122,9 @@ export class NavbarComponent implements OnInit {
             this.currentPassword = '';
             this.newPassword = '';
             this.displayUpdatePassword = false;
-            this.notifyService.showSuccess();
+            this.notifyService.showSuccess("Password Updated Successfully!");
           } else {
-            this.notifyService.showError();
+            this.notifyService.showError("Error In Update Password!");
           }
         });
     }
@@ -145,9 +145,9 @@ export class NavbarComponent implements OnInit {
         if (data != 'null') {
           this.userinfo = data[0];
           this.displayBasic = false;
-          this.notifyService.showSuccess();
+          this.notifyService.showSuccess("Profile Updated Successfully!");
         } else {
-          this.notifyService.showError();
+          this.notifyService.showError("Error In Profile Update!");
         }
       });
   }
@@ -179,7 +179,7 @@ export class NavbarComponent implements OnInit {
             phoneNumber: this.updateProfileData.phoneNumber,
           });
         } else {
-          this.notifyService.showError();
+          this.notifyService.showError("Error in Profile!");
         }
       });
   }

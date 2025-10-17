@@ -51,7 +51,6 @@ export class AuthService {
           );
           this.isAuthenticatedSubject.next(true);
           this.userInfo.next(response);
-          debugger
           if (response.roles == "Employee" || response.roles == "Manager") {
             this.router.navigate([rootNavigationRoutes.tasks]);
           }

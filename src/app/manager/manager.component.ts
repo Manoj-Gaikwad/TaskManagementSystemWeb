@@ -106,7 +106,6 @@ export class ManagerComponent implements OnInit {
     this.managerData.role = role;
     this.managerData.dob = new Date(this.managerData.dob).toISOString();
     this.authservice.register(this.managerData).subscribe((response: any) => {
-      debugger;
       if (response.result == 'User created successfully') {
         this.notifyService.showSuccess("User created successfully");
         this.managerForm.reset();
@@ -170,7 +169,6 @@ export class ManagerComponent implements OnInit {
   }
 
   showconformDeleteDialog(data: any) {
-    debugger;
     this.RemoveRecordemail = data;
     this.conformDelete = true;
   }
@@ -180,7 +178,6 @@ export class ManagerComponent implements OnInit {
     this.taskservice
       .DeleteRecoredManager(this.RemoveRecordemail)
       .subscribe((data) => {
-        debugger;
         if (data != null) {
           this.GetAllManagerList();
           this.notifyService.showSuccess("Record Deleted Successfully");

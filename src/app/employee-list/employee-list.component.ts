@@ -228,7 +228,6 @@ export class EmployeeListComponent implements OnInit {
 
 
   showconformDeleteDialog(data:any){
-    debugger
     this.RemoveRecordemail=data;
     this.conformDelete=true;
   }
@@ -236,7 +235,6 @@ export class EmployeeListComponent implements OnInit {
   {
     this.conformDelete=false;
     this.taskService.DeleteRecoredEmployee(this.RemoveRecordemail).subscribe(data=>{
-      debugger
       if(data!=null)
       {
          this.GetManagerWiseEmployee();

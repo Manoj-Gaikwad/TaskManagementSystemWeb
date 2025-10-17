@@ -81,7 +81,6 @@ export class TaskListComponent implements OnInit {
   }
 
 ngOnInit(): void {
-  debugger
     const user = this.authService.getUser();
    
     this.GetAssignTasks();

@@ -9,7 +9,8 @@ import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { Upload } from 'src/Models/upload';
 import { Customer } from 'src/Models/customer';
-import { chartData } from 'src/Models/chartData';
+import { chartData } from 'src/Models/chartdata';
+// import { chartData } from 'src/Models/chartData';
 
 @Injectable({
   providedIn: 'root',
@@ -126,7 +127,6 @@ export class TaskService {
   }
 
   getchartData(chartdata: chartData) {
-    debugger;
     return this.http.post(`${this.apiUrl}/Admin/GetChartData`, chartdata, {
       headers: this.getHeaders(),
     });

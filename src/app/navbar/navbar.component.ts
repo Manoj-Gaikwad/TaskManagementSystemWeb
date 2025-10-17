@@ -135,7 +135,6 @@ export class NavbarComponent implements OnInit {
   }
 
   onSubmit(data: any) {
-    debugger
     this.updateProfileData = data.value;
     this.updateProfileData.dob = new Date(data.value.dob).toISOString();
     this.authService

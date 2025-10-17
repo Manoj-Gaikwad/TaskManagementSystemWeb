@@ -7,27 +7,33 @@
           <div class="form-group">
             <label for="firstName">First Name</label>
             <input id="firstName" type="text" formControlName="firstName" class="form-control" />
-            <div *ngIf="f['firstName'].touched && f['firstName'].invalid" class="error">
-              *First Name is required
-            </div>
+            @if (f['firstName'].touched && f['firstName'].invalid) {
+              <div class="error">
+                *First Name is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="lastName">Last Name</label>
             <input id="lastName" type="text" formControlName="lastName" class="form-control" />
-            <div *ngIf="f['lastName'].touched && f['lastName'].invalid" class="error">
-              *Last Name is required
-            </div>
+            @if (f['lastName'].touched && f['lastName'].invalid) {
+              <div class="error">
+                *Last Name is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="dob">Date of Birth</label>
             <input id="dob" type="date" formControlName="dob" class="form-control" />
-            <div *ngIf="f['dob'].touched && f['dob'].invalid" class="error">
-              *Date Of Birth is required
-            </div>
+            @if (f['dob'].touched && f['dob'].invalid) {
+              <div class="error">
+                *Date Of Birth is required
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -36,9 +42,11 @@
           <div class="form-group">
             <label for="email">Email</label>
             <input id="email" type="email" formControlName="email" class="form-control" />
-            <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
-              *Valid Email is required
-            </div>
+            @if (f['email'].touched && f['email'].invalid) {
+              <div class="error">
+                *Valid Email is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-6">
@@ -46,17 +54,25 @@
             <label for="password">Password</label>
             <input id="password" type="password" formControlName="password" class="form-control" />
 
-            <div *ngIf="f['password'].touched && f['password'].invalid" class="error">
-              <div *ngIf="f['password'].errors?.['required']">
-                *Password is required
+            @if (f['password'].touched && f['password'].invalid) {
+              <div class="error">
+                @if (f['password'].errors?.['required']) {
+                  <div>
+                    *Password is required
+                  </div>
+                }
+                @if (f['password'].errors?.['minlength']) {
+                  <div>
+                    *Password should be at least 6 characters
+                  </div>
+                }
+                @if (f['password'].errors?.['pattern']) {
+                  <div>
+                    *Password must contain at least one uppercase and one lowercase letter, one number, and one special character ,
+                  </div>
+                }
               </div>
-              <div *ngIf="f['password'].errors?.['minlength']">
-                *Password should be at least 6 characters
-              </div>
-              <div *ngIf="f['password'].errors?.['pattern']">
-                *Password must contain at least one uppercase and one lowercase letter, one number, and one special character ,
-              </div>
-            </div>
+            }
           </div>
         </div>
 
@@ -66,37 +82,45 @@
           <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
             <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
-            <div *ngIf="f['phoneNumber'].touched && f['phoneNumber'].invalid" class="error">
-              *PhoneNumber is required
-            </div>
+            @if (f['phoneNumber'].touched && f['phoneNumber'].invalid) {
+              <div class="error">
+                *PhoneNumber is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label for="department">Department</label>
             <input id="department" type="text" formControlName="department" class="form-control" />
-            <div *ngIf="f['department'].touched && f['department'].invalid" class="error">
-              *Department is required
-            </div>
+            @if (f['department'].touched && f['department'].invalid) {
+              <div class="error">
+                *Department is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label for="role">Role</label><br>
             <p-dropdown [options]="Roles" [(ngModel)]="selectedRole" placeholder="Select Role" optionLabel="name"
-              [showClear]="true" formControlName="role"></p-dropdown>
-            <div *ngIf="f['role'].touched && f['role'].invalid" class="error">
-              *Role is required
-            </div>
+            [showClear]="true" formControlName="role"></p-dropdown>
+            @if (f['role'].touched && f['role'].invalid) {
+              <div class="error">
+                *Role is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label for="managerId">Manager ID</label>
             <input id="managerId" type="text" formControlName="managerId" class="form-control" readonly />
-            <div *ngIf="f['managerId'].touched && f['managerId'].invalid" class="error">
-              *ManagerId is required
-            </div>
+            @if (f['managerId'].touched && f['managerId'].invalid) {
+              <div class="error">
+                *ManagerId is required
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -105,9 +129,11 @@
           <div class="form-group">
             <label for="address">Address</label>
             <input id="address" formControlName="address" class="form-control">
-            <div *ngIf="f['address'].touched && f['address'].invalid" class="error">
-              *Address is required
-            </div>
+            @if (f['address'].touched && f['address'].invalid) {
+              <div class="error">
+                *Address is required
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -128,7 +154,7 @@
     <div class="table-header d-flex justify-content-between align-items-center">
       <div class="button-container">
         <button pButton pRipple type="button" label="New Employee" icon="pi pi-plus" class="p-button-secondary"
-          (click)="showBasicDialog()"></button>
+        (click)="showBasicDialog()"></button>
       </div>
       <h3 class="table-title">List of Employees</h3>
       <span class="p-input-icon-right">
@@ -141,66 +167,66 @@
   <ng-template pTemplate="header">
     <tr>
       <th pSortableColumn="firstName">First Name<p-columnFilter type="text" field="firstName" display="menu"
-          class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="lastName">LastName<p-columnFilter type="text" field="lastName" display="menu" class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="email">Email<p-columnFilter type="text" field="email" display="menu" class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="phoneNumber">Contact <p-columnFilter type="text" field="phoneNumber" display="menu"
-          class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="dob">DOB <p-columnFilter type="text" field="dob" display="menu" class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="address">Address <p-columnFilter type="text" field="address" display="menu" class="test2">
-        </p-columnFilter>
-      </th>
-      <th pSortableColumn="role">Role
-      </th>
-      <th pSortableColumn="role">Modify
-      </th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-employee>
-    <tr class="p-selectable-row">
-      <td>
-        {{employee.firstName}}
-      </td>
-      <td>
-        {{employee.lastName}}
-      </td>
-      <td>
-        {{employee.email}}
-      </td>
-      <td>
-        {{employee.phoneNumber}}
-      </td>
-      <td>
-        {{employee.dob|date:'dd/MM/yy'}}
-      </td>
-      <td>
-        {{employee.address}}
-      </td>
-      <td>
-        {{employee.role}}
-      </td>
-      <td style="text-align: center">
-        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-primary"
-          (click)="showUpdateDialog(employee.email)"></button>&nbsp;
-          <p-button (click)="showconformDeleteDialog(employee.email)" icon="pi pi-trash" styleClass="p-button-danger"></p-button>
-      </td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
-    <tr>
-      <td colspan="8">No Employee found.</td>
-    </tr>
-  </ng-template>
+        class="test2">
+      </p-columnFilter>
+    </th>
+    <th pSortableColumn="lastName">LastName<p-columnFilter type="text" field="lastName" display="menu" class="test2">
+    </p-columnFilter>
+  </th>
+  <th pSortableColumn="email">Email<p-columnFilter type="text" field="email" display="menu" class="test2">
+  </p-columnFilter>
+</th>
+<th pSortableColumn="phoneNumber">Contact <p-columnFilter type="text" field="phoneNumber" display="menu"
+  class="test2">
+</p-columnFilter>
+</th>
+<th pSortableColumn="dob">DOB <p-columnFilter type="text" field="dob" display="menu" class="test2">
+</p-columnFilter>
+</th>
+<th pSortableColumn="address">Address <p-columnFilter type="text" field="address" display="menu" class="test2">
+</p-columnFilter>
+</th>
+<th pSortableColumn="role">Role
+</th>
+<th pSortableColumn="role">Modify
+</th>
+</tr>
+</ng-template>
+<ng-template pTemplate="body" let-employee>
+  <tr class="p-selectable-row">
+    <td>
+      {{employee.firstName}}
+    </td>
+    <td>
+      {{employee.lastName}}
+    </td>
+    <td>
+      {{employee.email}}
+    </td>
+    <td>
+      {{employee.phoneNumber}}
+    </td>
+    <td>
+      {{employee.dob|date:'dd/MM/yy'}}
+    </td>
+    <td>
+      {{employee.address}}
+    </td>
+    <td>
+      {{employee.role}}
+    </td>
+    <td style="text-align: center">
+      <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-primary"
+      (click)="showUpdateDialog(employee.email)"></button>&nbsp;
+      <p-button (click)="showconformDeleteDialog(employee.email)" icon="pi pi-trash" styleClass="p-button-danger"></p-button>
+    </td>
+  </tr>
+</ng-template>
+<ng-template pTemplate="emptymessage">
+  <tr>
+    <td colspan="8">No Employee found.</td>
+  </tr>
+</ng-template>
 </p-table>
 
 
@@ -213,27 +239,33 @@
           <div class="form-group">
             <label for="firstName">First Name</label>
             <input id="firstName" type="text" formControlName="firstName" class="form-control" />
-            <div *ngIf="j['firstName'].touched && j['firstName'].invalid" class="error">
-              *First Name is required
-            </div>
+            @if (j['firstName'].touched && j['firstName'].invalid) {
+              <div class="error">
+                *First Name is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="lastName">Last Name</label>
             <input id="lastName" type="text" formControlName="lastName" class="form-control" />
-            <div *ngIf="j['lastName'].touched && j['lastName'].invalid" class="error">
-              *Last Name is required
-            </div>
+            @if (j['lastName'].touched && j['lastName'].invalid) {
+              <div class="error">
+                *Last Name is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="dob">Date of Birth</label>
             <input id="dob" type="date" formControlName="dob" class="form-control" />
-            <div *ngIf="j['dob'].touched && j['dob'].invalid" class="error">
-              *Date Of Birth is required
-            </div>
+            @if (j['dob'].touched && j['dob'].invalid) {
+              <div class="error">
+                *Date Of Birth is required
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -242,27 +274,33 @@
           <div class="form-group">
             <label for="email">Email</label>
             <input id="email" type="email" formControlName="email" class="form-control" readonly />
-            <div *ngIf="j['email'].touched && j['email'].invalid" class="error">
-              *Valid Email is required
-            </div>
+            @if (j['email'].touched && j['email'].invalid) {
+              <div class="error">
+                *Valid Email is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
             <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
-            <div *ngIf="j['phoneNumber'].touched && j['phoneNumber'].invalid" class="error">
-              *PhoneNumber is required
-            </div>
+            @if (j['phoneNumber'].touched && j['phoneNumber'].invalid) {
+              <div class="error">
+                *PhoneNumber is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label for="department">Department</label>
             <input id="department" type="text" formControlName="department" class="form-control" />
-            <div *ngIf="j['department'].touched && j['department'].invalid" class="error">
-              *Department is required
-            </div>
+            @if (j['department'].touched && j['department'].invalid) {
+              <div class="error">
+                *Department is required
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -271,9 +309,11 @@
           <div class="form-group">
             <label for="address">Address</label>
             <input id="address" formControlName="address" class="form-control">
-            <div *ngIf="j['address'].touched && j['address'].invalid" class="error">
-              *Address is required
-            </div>
+            @if (j['address'].touched && j['address'].invalid) {
+              <div class="error">
+                *Address is required
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -291,6 +331,6 @@
 <p-dialog header="Delete Record" [(visible)]="conformDelete" [style]="{width: '40vw'}">
   <p>Are you realy want to delete this Record ?</p>
   <ng-template pTemplate="footer">
-      <p-button icon="pi pi-check" (click)="deleteRecord()" label="Ok" styleClass="p-button-text"></p-button>
+    <p-button icon="pi pi-check" (click)="deleteRecord()" label="Ok" styleClass="p-button-text"></p-button>
   </ng-template>
 </p-dialog>

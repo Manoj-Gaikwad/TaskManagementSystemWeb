@@ -13,9 +13,10 @@ interface Role {
 }
 
 @Component({
-  selector: 'app-employee-list',
-  templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.css'],
+    selector: 'app-employee-list',
+    templateUrl: './employee-list.component.html',
+    styleUrls: ['./employee-list.component.css'],
+    standalone: false
 })
 export class EmployeeListComponent implements OnInit {
   allEmployeeList: any;

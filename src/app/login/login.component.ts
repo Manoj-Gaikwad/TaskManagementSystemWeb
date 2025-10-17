@@ -5,9 +5,10 @@ import { NotifyService } from 'src/Sevices/notify.service';
 import { login } from 'src/Models/login';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    standalone: false
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;

@@ -11,9 +11,10 @@ interface Role {
   name: string;
 }
 @Component({
-  selector: 'app-manager',
-  templateUrl: './manager.component.html',
-  styleUrls: ['./manager.component.css'],
+    selector: 'app-manager',
+    templateUrl: './manager.component.html',
+    styleUrls: ['./manager.component.css'],
+    standalone: false
 })
 export class ManagerComponent implements OnInit {
   allManagerList: any;

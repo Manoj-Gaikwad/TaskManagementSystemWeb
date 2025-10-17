@@ -3,7 +3,7 @@ import { TaskService } from '../../Sevices/task.service';
 import { Table } from 'primeng/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Register } from 'src/Models/register';
-import {chartData} from 'src/Models/chartData';
+import {chartData} from 'src/Models/chartdata';
 
 interface Month {
   name: string;
@@ -166,7 +166,6 @@ export class AdminComponent implements OnInit {
   }
 
   onRowSelect(event: any) {
-    debugger
     this.selectedEmployee = event.data.empName;
     this.currentEmail=event.data.email;
      this.chartdata={

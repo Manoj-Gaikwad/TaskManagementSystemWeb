@@ -5,40 +5,46 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ng-container *ngIf="isAuthenticated$ | async as isAuthenticated; else loginLink">
+    @if (isAuthenticated$ | async; as isAuthenticated) {
       <ul class="navbar-nav ml-auto">
-        <ng-container *ngIf="userRoles$ | async as userRoles">
-          <li class="nav-item" *ngIf="hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Employee')">
-            <a class="nav-link" [routerLink]="rootNavigationRoutes.tasks">Tasks</a>
-          </li>
-          <li class="nav-item" *ngIf="hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Manager')">
-            <a class="nav-link" [routerLink]="rootNavigationRoutes.employees">Employees</a>
-          </li>
-          <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin')">
-            <a class="nav-link" [routerLink]="rootNavigationRoutes.admin">Performance</a>
-          </li>
-          <li class="nav-item" *ngIf="hasRole(userRoles, 'Admin')">
-            <a class="nav-link" [routerLink]="rootNavigationRoutes.manager">Managers</a>
-          </li>
+        @if (userRoles$ | async; as userRoles) {
+          @if (hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Employee')) {
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="rootNavigationRoutes.tasks">Tasks</a>
+            </li>
+          }
+          @if (hasRole(userRoles, 'Manager') || hasRole(userRoles, 'Manager')) {
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="rootNavigationRoutes.employees">Employees</a>
+            </li>
+          }
+          @if (hasRole(userRoles, 'Admin')) {
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="rootNavigationRoutes.admin">Performance</a>
+            </li>
+          }
+          @if (hasRole(userRoles, 'Admin')) {
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="rootNavigationRoutes.manager">Managers</a>
+            </li>
+          }
           <li class="nav-item">
             <p-splitButton label="Welcome {{this.userinfo.firstName}} " [model]="this.items"
-              styleClass="p-button-rounded p-button-secondary mt-"></p-splitButton>
+            styleClass="p-button-rounded p-button-secondary mt-"></p-splitButton>
             <!-- <p-splitButton label="{{ this.userinfo?.firstName }} {{ this.userinfo?.lastName }}" [model]="items"
-              icon="pi pi-user" styleClass="p-button-raised p-button-secondary">
-            </p-splitButton> -->
-
-          </li>
-        </ng-container>
-      </ul>
-    </ng-container>
-    <ng-template #loginLink>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/login">Sign In</a>
+            icon="pi pi-user" styleClass="p-button-raised p-button-secondary">
+          </p-splitButton> -->
         </li>
-      </ul>
-    </ng-template>
-  </div>
+      }
+    </ul>
+  } @else {
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/login">Sign In</a>
+      </li>
+    </ul>
+  }
+</div>
 </nav>
 
 
@@ -51,27 +57,33 @@
           <div class="form-group">
             <label for="firstName">First Name</label>
             <input id="firstName" type="text" formControlName="firstName" class="form-control" />
-            <div *ngIf="f['firstName'].touched && f['firstName'].invalid" class="error">
-              *First Name is required
-            </div>
+            @if (f['firstName'].touched && f['firstName'].invalid) {
+              <div class="error">
+                *First Name is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="lastName">Last Name</label>
             <input id="lastName" type="text" formControlName="lastName" class="form-control" />
-            <div *ngIf="f['lastName'].touched && f['lastName'].invalid" class="error">
-              *Last Name is required
-            </div>
+            @if (f['lastName'].touched && f['lastName'].invalid) {
+              <div class="error">
+                *Last Name is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="dob">Date of Birth</label>
             <input id="dob" type="date" formControlName="dob" class="form-control" />
-            <div *ngIf="f['dob'].touched && f['dob'].invalid" class="error">
-              *Date Of Birth is required
-            </div>
+            @if (f['dob'].touched && f['dob'].invalid) {
+              <div class="error">
+                *Date Of Birth is required
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -80,27 +92,33 @@
           <div class="form-group">
             <label for="email">Email</label>
             <input id="email" type="email" formControlName="email" class="form-control" readonly />
-            <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
-              *Valid Email is required
-            </div>
+            @if (f['email'].touched && f['email'].invalid) {
+              <div class="error">
+                *Valid Email is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
             <input id="phoneNumber" type="text" formControlName="phoneNumber" class="form-control" />
-            <div *ngIf="f['phoneNumber'].touched && f['phoneNumber'].invalid" class="error">
-              *PhoneNumber is required
-            </div>
+            @if (f['phoneNumber'].touched && f['phoneNumber'].invalid) {
+              <div class="error">
+                *PhoneNumber is required
+              </div>
+            }
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label for="department">Department</label>
             <input id="department" type="text" formControlName="department" class="form-control" />
-            <div *ngIf="f['department'].touched && f['department'].invalid" class="error">
-              *Department is required
-            </div>
+            @if (f['department'].touched && f['department'].invalid) {
+              <div class="error">
+                *Department is required
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -109,9 +127,11 @@
           <div class="form-group">
             <label for="address">Address</label>
             <input id="address" formControlName="address" class="form-control">
-            <div *ngIf="f['address'].touched && f['address'].invalid" class="error">
-              *Address is required
-            </div>
+            @if (f['address'].touched && f['address'].invalid) {
+              <div class="error">
+                *Address is required
+              </div>
+            }
           </div>
         </div>
       </div>
